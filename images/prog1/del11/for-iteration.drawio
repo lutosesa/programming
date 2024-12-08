@@ -1,0 +1,77 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" version="25.0.3">
+  <diagram name="Sida-1" id="FN9Vri1Tlrqw-UVZw7Oa">
+    <mxGraphModel dx="1257" dy="728" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" background="none" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="b1RTBH2ZrKry9lONY5Qc-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontStyle=1;fontSize=13;endSize=6;startSize=6;strokeWidth=3;strokeColor=#3399FF;" parent="1" source="xosJt2AaoFJwaWUsbzb_-1" target="xosJt2AaoFJwaWUsbzb_-2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="xosJt2AaoFJwaWUsbzb_-1" value="&lt;font style=&quot;font-size: 15px;&quot;&gt;Start&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;fontStyle=1;strokeColor=#999999;strokeWidth=3;" parent="1" vertex="1">
+          <mxGeometry x="382" y="51" width="130" height="29" as="geometry" />
+        </mxCell>
+        <mxCell id="xosJt2AaoFJwaWUsbzb_-2" value="&lt;font&gt;&lt;b style=&quot;&quot;&gt;Läs in ett tal n&lt;/b&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fcfcfc;strokeColor=#b3b3b3;strokeWidth=3;" parent="1" vertex="1">
+          <mxGeometry x="383" y="110" width="130" height="33" as="geometry" />
+        </mxCell>
+        <mxCell id="xosJt2AaoFJwaWUsbzb_-7" value="&lt;font style=&quot;font-size: 15px;&quot;&gt;Stop&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;fontStyle=1;labelBackgroundColor=none;fontColor=default;strokeWidth=3;strokeColor=#999999;spacingLeft=0;spacingRight=0;" parent="1" vertex="1">
+          <mxGeometry x="590" y="378" width="95" height="27" as="geometry" />
+        </mxCell>
+        <mxCell id="b1RTBH2ZrKry9lONY5Qc-13" value="" style="endArrow=classic;html=1;rounded=0;startSize=4;strokeWidth=3;strokeColor=#3399FF;targetPerimeterSpacing=0;sourcePerimeterSpacing=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="447" y="143" as="sourcePoint" />
+            <mxPoint x="447" y="175" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="b1RTBH2ZrKry9lONY5Qc-17" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=#3399FF;strokeWidth=3;jumpSize=9;startSize=6;spacingLeft=0;spacingRight=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" edge="1" source="_gE3PZ9X44_niG-sPGb0-19">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="460" y="554" as="sourcePoint" />
+            <mxPoint x="337" y="280" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="461" y="398" />
+              <mxPoint x="289" y="394" />
+              <mxPoint x="289" y="280" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="b1RTBH2ZrKry9lONY5Qc-24" value="&lt;font&gt;&lt;b style=&quot;&quot;&gt;Sätt summan till noll&lt;/b&gt;&lt;/font&gt;&lt;div&gt;&lt;font&gt;&lt;b style=&quot;&quot;&gt;summa = 0&lt;/b&gt;&lt;/font&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fcfcfc;strokeColor=#b3b3b3;strokeWidth=3;" parent="1" vertex="1">
+          <mxGeometry x="381" y="176" width="140" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="b1RTBH2ZrKry9lONY5Qc-25" value="" style="endArrow=classic;html=1;rounded=0;startSize=4;strokeWidth=3;strokeColor=#3399FF;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" edge="1" source="b1RTBH2ZrKry9lONY5Qc-24">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="447.5" y="227" as="sourcePoint" />
+            <mxPoint x="451" y="241" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="b1RTBH2ZrKry9lONY5Qc-45" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=3;strokeColor=#3399FF;targetPerimeterSpacing=1;sourcePerimeterSpacing=0;spacingLeft=0;spacingRight=0;" parent="1" target="b1RTBH2ZrKry9lONY5Qc-44" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="560" y="281" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="b1RTBH2ZrKry9lONY5Qc-39" value="&lt;b&gt;för varje tal i från 1 till n&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;font color=&quot;#cc0000&quot; style=&quot;font-size: 11px;&quot;&gt;for i in range( i, n+1 )&lt;/font&gt;&lt;/b&gt;&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;strokeColor=#808080;strokeWidth=4;spacingLeft=0;spacingRight=0;" parent="1" vertex="1">
+          <mxGeometry x="336" y="241" width="229" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="b1RTBH2ZrKry9lONY5Qc-40" value="" style="endArrow=classic;html=1;rounded=0;startSize=4;strokeWidth=3;strokeColor=#3399FF;sourcePerimeterSpacing=0;spacingLeft=0;spacingRight=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="454" y="315" as="sourcePoint" />
+            <mxPoint x="454" y="351" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="b1RTBH2ZrKry9lONY5Qc-46" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=3;strokeColor=#3399FF;spacingLeft=0;spacingRight=0;" parent="1" source="b1RTBH2ZrKry9lONY5Qc-44" target="xosJt2AaoFJwaWUsbzb_-7" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b1RTBH2ZrKry9lONY5Qc-44" value="&lt;b&gt;Skriva ut&amp;nbsp;&lt;/b&gt;&lt;b style=&quot;background-color: initial;&quot;&gt;summan&lt;/b&gt;" style="whiteSpace=wrap;html=1;strokeColor=#b3b3b3;strokeWidth=3;spacingLeft=0;spacingRight=0;" parent="1" vertex="1">
+          <mxGeometry x="564" y="312" width="147" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="_gE3PZ9X44_niG-sPGb0-1" value="&lt;b&gt;&lt;font style=&quot;font-size: 16px;&quot; color=&quot;#3399ff&quot;&gt;falskt&lt;/font&gt;&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="573" y="262" width="46" height="17" as="geometry" />
+        </mxCell>
+        <mxCell id="_gE3PZ9X44_niG-sPGb0-6" value="&lt;b&gt;&lt;font style=&quot;font-size: 16px;&quot; color=&quot;#3399ff&quot;&gt;sant&lt;/font&gt;&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="399" y="321" width="46" height="17" as="geometry" />
+        </mxCell>
+        <mxCell id="_gE3PZ9X44_niG-sPGb0-19" value="&lt;b&gt;Lägg till talet&lt;font color=&quot;#cc0000&quot;&gt; i&lt;/font&gt; till summan&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fcfcfc;strokeColor=#b3b3b3;strokeWidth=3;spacingLeft=0;spacingRight=0;" vertex="1" parent="1">
+          <mxGeometry x="377" y="351" width="168" height="31" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
