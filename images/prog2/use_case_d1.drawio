@@ -1,0 +1,59 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" version="25.0.3">
+  <diagram name="Sida-1" id="AJxYaFfmJ8Ti6YrZ3zuH">
+    <mxGraphModel dx="1050" dy="513" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="OkmquB3F0FaFE0l-qUpd-2" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=3;strokeColor=#ADADAD;fillStyle=auto;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="260" y="50" width="240" height="270" as="geometry" />
+        </mxCell>
+        <mxCell id="nfCxf4BdTM1YR3Tz8241-1" value="&lt;font color=&quot;#ff33ff&quot;&gt;Administratör&lt;/font&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;strokeWidth=4;strokeColor=#FF33FF;fontStyle=1;fontColor=#3333FF;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="150" y="240" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="nfCxf4BdTM1YR3Tz8241-2" value="&lt;font color=&quot;#ff33ff&quot;&gt;Kund&lt;/font&gt;" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;strokeWidth=4;strokeColor=#FF33FF;fontStyle=1;fontColor=#3333FF;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="150" y="110" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="nfCxf4BdTM1YR3Tz8241-4" value="Söka efter film" style="ellipse;whiteSpace=wrap;html=1;strokeColor=#8F8F8F;strokeWidth=3;fontStyle=1;align=center;verticalAlign=middle;fillColor=none;fontColor=#FF33FF;" parent="1" vertex="1">
+          <mxGeometry x="295" y="110" width="170" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="nfCxf4BdTM1YR3Tz8241-5" value="Boka biljett" style="ellipse;whiteSpace=wrap;html=1;strokeColor=#8F8F8F;strokeWidth=3;fontStyle=1;align=center;verticalAlign=middle;fillColor=none;fontColor=#FF33FF;" parent="1" vertex="1">
+          <mxGeometry x="300" y="160" width="170" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="nfCxf4BdTM1YR3Tz8241-6" value="Avboka bijett" style="ellipse;whiteSpace=wrap;html=1;strokeColor=#8F8F8F;strokeWidth=3;fontStyle=1;align=center;verticalAlign=middle;fillColor=none;fontColor=#FF33FF;" parent="1" vertex="1">
+          <mxGeometry x="295" y="210" width="170" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="nfCxf4BdTM1YR3Tz8241-7" value="Skapa rapport" style="ellipse;whiteSpace=wrap;html=1;strokeColor=#8F8F8F;strokeWidth=3;fontStyle=1;align=center;verticalAlign=middle;fillColor=none;fontColor=#FF33FF;" parent="1" vertex="1">
+          <mxGeometry x="295" y="255" width="170" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="nfCxf4BdTM1YR3Tz8241-14" value="" style="endArrow=none;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#FF33FF;strokeWidth=3;" parent="1" target="nfCxf4BdTM1YR3Tz8241-4" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="180" y="140" as="sourcePoint" />
+            <mxPoint x="440" y="300" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nfCxf4BdTM1YR3Tz8241-17" value="" style="endArrow=none;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#FF33FF;strokeWidth=3;" parent="1" target="nfCxf4BdTM1YR3Tz8241-5" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="180" y="140" as="sourcePoint" />
+            <mxPoint x="250" y="220" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nfCxf4BdTM1YR3Tz8241-18" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#FF33FF;strokeWidth=3;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;startSize=6;targetPerimeterSpacing=-15;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="nfCxf4BdTM1YR3Tz8241-2" target="nfCxf4BdTM1YR3Tz8241-6" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="200" y="150" as="sourcePoint" />
+            <mxPoint x="252" y="181" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nfCxf4BdTM1YR3Tz8241-20" value="" style="endArrow=none;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#FF33FF;strokeWidth=3;" parent="1" source="nfCxf4BdTM1YR3Tz8241-1" target="nfCxf4BdTM1YR3Tz8241-7" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="200" y="270" as="sourcePoint" />
+            <mxPoint x="270" y="260" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="truT_dyukLVy1uBFN-IP-2" value="Bokningssystem för biobiljetter" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=13;fontStyle=1;fontColor=#007FFF;" parent="1" vertex="1">
+          <mxGeometry x="270" y="60" width="220" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

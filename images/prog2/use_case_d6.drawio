@@ -1,0 +1,85 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" scale="1" border="0" version="25.0.3">
+  <diagram name="Sida-1" id="AJxYaFfmJ8Ti6YrZ3zuH">
+    <mxGraphModel dx="1050" dy="513" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="OkmquB3F0FaFE0l-qUpd-2" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeWidth=3;strokeColor=#ADADAD;fillStyle=auto;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="250" y="30" width="440" height="350" as="geometry" />
+        </mxCell>
+        <mxCell id="nfCxf4BdTM1YR3Tz8241-2" value="&lt;font color=&quot;#ff33ff&quot;&gt;Kund&lt;/font&gt;" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;strokeWidth=4;strokeColor=#FF33FF;fontStyle=1;fontColor=#3333FF;" parent="1" vertex="1">
+          <mxGeometry x="180" y="80" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="nfCxf4BdTM1YR3Tz8241-4" value="Beställa mat" style="ellipse;whiteSpace=wrap;html=1;strokeColor=#8F8F8F;strokeWidth=3;fontStyle=1;align=center;verticalAlign=middle;fillColor=none;fontColor=#FF33FF;" parent="1" vertex="1">
+          <mxGeometry x="300" y="80" width="140" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="nfCxf4BdTM1YR3Tz8241-5" value="&lt;font color=&quot;#33ff33&quot;&gt;Kontrollera lagerstatus&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;strokeColor=#33FF33;strokeWidth=3;fontStyle=1;align=center;verticalAlign=middle;fillColor=none;fontColor=#FF33FF;" parent="1" vertex="1">
+          <mxGeometry x="510" y="80" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="nfCxf4BdTM1YR3Tz8241-6" value="Betala för beställning" style="ellipse;whiteSpace=wrap;html=1;strokeColor=#8F8F8F;strokeWidth=3;fontStyle=1;align=center;verticalAlign=middle;fillColor=none;fontColor=#FF33FF;" parent="1" vertex="1">
+          <mxGeometry x="300" y="140" width="140" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="nfCxf4BdTM1YR3Tz8241-14" value="" style="endArrow=none;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#FF33FF;strokeWidth=3;exitX=0.747;exitY=0.41;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="nfCxf4BdTM1YR3Tz8241-2" target="nfCxf4BdTM1YR3Tz8241-4" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="180" y="150" as="sourcePoint" />
+            <mxPoint x="440" y="300" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nfCxf4BdTM1YR3Tz8241-18" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#FF33FF;strokeWidth=3;entryX=0.027;entryY=0.335;entryDx=0;entryDy=0;exitX=0.747;exitY=0.41;exitDx=0;exitDy=0;exitPerimeter=0;entryPerimeter=0;" parent="1" source="nfCxf4BdTM1YR3Tz8241-2" target="9_ytdxA8nvbYRZ1dGRR6-1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="180" y="100" as="sourcePoint" />
+            <mxPoint x="300" y="340" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nfCxf4BdTM1YR3Tz8241-20" value="" style="endArrow=none;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#FF33FF;strokeWidth=3;" parent="1" source="nfCxf4BdTM1YR3Tz8241-1" target="0s7Husm1LnrKiKm2LVra-1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="200" y="190" as="sourcePoint" />
+            <mxPoint x="285" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="0s7Husm1LnrKiKm2LVra-1" value="Uppdatera many" style="ellipse;whiteSpace=wrap;html=1;strokeColor=#8F8F8F;strokeWidth=3;fontStyle=1;align=center;verticalAlign=middle;fillColor=none;fontColor=#FF33FF;" parent="1" vertex="1">
+          <mxGeometry x="300" y="200" width="140" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="0s7Husm1LnrKiKm2LVra-2" value="Leverera beställning" style="ellipse;whiteSpace=wrap;html=1;strokeColor=#8F8F8F;strokeWidth=3;fontStyle=1;align=center;verticalAlign=middle;fillColor=none;fontColor=#FF33FF;" parent="1" vertex="1">
+          <mxGeometry x="300" y="260" width="140" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="0s7Husm1LnrKiKm2LVra-10" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#FF33FF;strokeWidth=3;entryX=0;entryY=0.5;entryDx=0;entryDy=0;sourcePerimeterSpacing=0;" parent="1" target="nfCxf4BdTM1YR3Tz8241-6" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="205" y="106" as="sourcePoint" />
+            <mxPoint x="305" y="235" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rBJhgB2XHcaucIivmp9b-1" value="&lt;font color=&quot;#007fff&quot; style=&quot;font-size: 15px;&quot;&gt;&lt;b style=&quot;&quot;&gt;Matleveransapp&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="370" y="40" width="200" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="rBJhgB2XHcaucIivmp9b-4" value="" style="endArrow=classic;html=1;rounded=0;dashed=1;strokeWidth=3;endSize=6;startSize=6;strokeColor=#33FF33;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" target="nfCxf4BdTM1YR3Tz8241-5" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="440" y="100" as="sourcePoint" />
+            <mxPoint x="590" y="98" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rBJhgB2XHcaucIivmp9b-5" value="&lt;font style=&quot;font-size: 12px;&quot;&gt;&amp;lt;&amp;lt;include&amp;gt;&amp;gt;&lt;/font&gt;" style="edgeLabel;resizable=0;html=1;;align=center;verticalAlign=middle;labelBackgroundColor=none;fontColor=#00CC00;fontStyle=0;fontSize=13;spacingBottom=3;rotation=359;" parent="rBJhgB2XHcaucIivmp9b-4" connectable="0" vertex="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-2" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nb5x-cLoemDHNLxtf5oa-3" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#FF33FF;strokeWidth=3;entryX=0;entryY=0.5;entryDx=0;entryDy=0;startSize=4;endSize=8;" parent="1" source="nb5x-cLoemDHNLxtf5oa-1" target="0s7Husm1LnrKiKm2LVra-2" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="180" y="300" as="sourcePoint" />
+            <mxPoint x="310" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nb5x-cLoemDHNLxtf5oa-1" value="&lt;div&gt;&lt;font color=&quot;#ff33ff&quot;&gt;Leveransförare&lt;/font&gt;&lt;/div&gt;" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;strokeWidth=4;strokeColor=#FF33FF;fontStyle=1;fontColor=#3333FF;" parent="1" vertex="1">
+          <mxGeometry x="180" y="280" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="nfCxf4BdTM1YR3Tz8241-1" value="&lt;font color=&quot;#ff33ff&quot;&gt;Restaurang&lt;/font&gt;" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;strokeWidth=4;strokeColor=#FF33FF;fontStyle=1;fontColor=#3333FF;" parent="1" vertex="1">
+          <mxGeometry x="180" y="180" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="9_ytdxA8nvbYRZ1dGRR6-1" value="Spåra leverans" style="ellipse;whiteSpace=wrap;html=1;strokeColor=#8F8F8F;strokeWidth=3;fontStyle=1;align=center;verticalAlign=middle;fillColor=none;fontColor=#FF33FF;" parent="1" vertex="1">
+          <mxGeometry x="300" y="320" width="140" height="40" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
