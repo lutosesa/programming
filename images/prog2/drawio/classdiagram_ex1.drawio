@@ -1,0 +1,59 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" version="25.0.3">
+  <diagram id="jKGhN8L5fSSmdF4XU1ER" name="Sida-1">
+    <mxGraphModel dx="1050" dy="513" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" background="#F1FAEE" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="M13o0ac0k6gfSaEmKSpg-11" value="" style="endArrow=diamondThin;endFill=0;endSize=24;html=1;rounded=0;strokeColor=#FF33FF;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;exitX=0.48;exitY=1.046;exitDx=0;exitDy=0;exitPerimeter=0;strokeWidth=3;spacingTop=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="U7t3b0pXWg5d8CyqZuzV-8" target="M13o0ac0k6gfSaEmKSpg-1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="520" y="254" as="sourcePoint" />
+            <mxPoint x="282" y="399" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="M13o0ac0k6gfSaEmKSpg-20" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#FF33FF;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;labelBackgroundColor=default;entryX=0.482;entryY=0.975;entryDx=0;entryDy=0;entryPerimeter=0;strokeWidth=3;" edge="1" parent="1" target="U7t3b0pXWg5d8CyqZuzV-4">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="310" y="183" as="sourcePoint" />
+            <mxPoint x="22" y="179" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="U7t3b0pXWg5d8CyqZuzV-1" value="Bok&#xa;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;fillColor=#FF99FF;strokeColor=#FF33FF;fontColor=#1D3557;strokeWidth=3;fontSize=14;" parent="1" vertex="1">
+          <mxGeometry x="167.5" y="11" width="294" height="126" as="geometry" />
+        </mxCell>
+        <mxCell id="U7t3b0pXWg5d8CyqZuzV-2" value="+ titel: str&#xa;+ författare: str&#xa;+ ISBN: str" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=1;fontColor=#CC00CC;strokeWidth=2;fontStyle=1" parent="U7t3b0pXWg5d8CyqZuzV-1" vertex="1">
+          <mxGeometry y="26" width="294" height="51" as="geometry" />
+        </mxCell>
+        <mxCell id="U7t3b0pXWg5d8CyqZuzV-3" value="" style="line;strokeWidth=2;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;rounded=1;labelBackgroundColor=none;strokeColor=#FF33FF;fontColor=#FF33FF;" parent="U7t3b0pXWg5d8CyqZuzV-1" vertex="1">
+          <mxGeometry y="77" width="294" height="9" as="geometry" />
+        </mxCell>
+        <mxCell id="U7t3b0pXWg5d8CyqZuzV-4" value="+ __init__(self, titel: str, författare: str, ISBN: str)&#xa;+ visa_info(): str" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=1;fontColor=#CC00CC;fontStyle=1;strokeWidth=2;" parent="U7t3b0pXWg5d8CyqZuzV-1" vertex="1">
+          <mxGeometry y="86" width="294" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="U7t3b0pXWg5d8CyqZuzV-5" value="Lån" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=31;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;fillColor=#FF99FF;strokeColor=#FF33FF;fontColor=#1D3557;strokeWidth=3;fontSize=14;swimlaneLine=1;glass=0;shadow=0;" parent="1" vertex="1">
+          <mxGeometry x="130" y="183" width="384" height="149" as="geometry" />
+        </mxCell>
+        <mxCell id="U7t3b0pXWg5d8CyqZuzV-6" value="+ låntagare : Låntagare&#xa;+ bok: Bok&#xa;+ datum: str" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=1;fontColor=#CC00CC;spacing=4;fontStyle=1;strokeWidth=2;" parent="U7t3b0pXWg5d8CyqZuzV-5" vertex="1">
+          <mxGeometry y="31" width="384" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="U7t3b0pXWg5d8CyqZuzV-7" value="" style="line;strokeWidth=2;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;rounded=1;labelBackgroundColor=#F1FAEE;strokeColor=#FF33FF;fontColor=#1D3557;" parent="U7t3b0pXWg5d8CyqZuzV-5" vertex="1">
+          <mxGeometry y="85" width="384" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="U7t3b0pXWg5d8CyqZuzV-8" value="+ __init__( self )&#xa;+ skapa_lån( låntagare: Låntagare, bok: Bok, datum: str) : str" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=1;fontColor=#CC00CC;perimeterSpacing=0;fontStyle=1;spacingBottom=1;spacingTop=3;spacing=5;strokeWidth=2;" parent="U7t3b0pXWg5d8CyqZuzV-5" vertex="1">
+          <mxGeometry y="93" width="384" height="56" as="geometry" />
+        </mxCell>
+        <mxCell id="M13o0ac0k6gfSaEmKSpg-1" value="Låntagare" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=31;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;fillColor=#FF99FF;strokeColor=#FF33FF;fontColor=#1D3557;strokeWidth=3;fontSize=14;swimlaneLine=1;gradientColor=none;swimlaneFillColor=none;container=0;flipV=0;flipH=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" vertex="1" parent="1">
+          <mxGeometry x="206" y="403" width="215.25" height="142" as="geometry" />
+        </mxCell>
+        <mxCell id="M13o0ac0k6gfSaEmKSpg-2" value="+ namn : str&#xa;+ lån_lista: List[Lån]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=1;fontColor=#CC00CC;spacing=4;fontStyle=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="211.25" y="443" width="170" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="M13o0ac0k6gfSaEmKSpg-3" value="" style="line;strokeWidth=2;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;rounded=1;labelBackgroundColor=#F1FAEE;strokeColor=#FF33FF;fontColor=#1D3557;" vertex="1" parent="1">
+          <mxGeometry x="206" y="490" width="217" height="4" as="geometry" />
+        </mxCell>
+        <mxCell id="M13o0ac0k6gfSaEmKSpg-4" value="+ __init__( self, namn: str )&#xa;+ lägg_till_lån(lån: Lån) : None" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=1;fontColor=#CC00CC;perimeterSpacing=0;fontStyle=1;spacingBottom=0;spacingTop=3;spacing=5;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="209.25" y="495" width="197.75" height="44" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
