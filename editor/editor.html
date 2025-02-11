@@ -7,19 +7,19 @@
 
         <link rel="icon" type="image/x-icon" href="img/favicon.ico" />
 
-        <!-- CodeMirror-stilar -->
+        <!-- CodeMirror 5 - stilar -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css" />
 
-        <!-- CodeMirror Hinting-stil -->
-        <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/hint/show-hint.min.css"
-        />
+        <!-- CodeMirror 5 Hinting-stil -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/hint/show-hint.min.css" />
+
+        <!-- Linting -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/lint/lint.min.css">
 
         <!-- Font Awesome för ikoner -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
-        <!--Theme-->
+        <!-- Nerladdad temma -  Theme-->
         <link rel="stylesheet" href="codemirror/theme/mdn-like.css" />
         <link rel="stylesheet" href="codemirror/theme/paraiso-light.css" />
 
@@ -27,8 +27,10 @@
     </head>
     <body>
         <div class="editor-container">
+            
             <!-- Verktygsfält -->
             <div class="toolbar">
+                <!-- Vänster verktygsfält - varumärkes bild och titel, flera knappar  -->
                 <div class="toolbar-left">
                     <img src="img/favicon.ico" alt="favicon-bild" width="25" height="25" class="img-brand" />
                     <span class="span-title-a">Webb</span> Editor
@@ -63,7 +65,7 @@
                     </button>
                 </div>
 
-                <!-- Container för temaväljaren som placeras till höger -->
+                <!-- Vänster verktygsfält - temaväljaren placeras här -->
                 <div class="toolbar-right">
                     <button id="toggleTheme" class="btn-toggle" title="Byt tema">
                         <span class="btn-toggle-sun active">
@@ -76,15 +78,15 @@
                 </div>
             </div>
 
-            <!-- Layout med Editor och Preview -->
+            <!-- Layout med Editor, en resider(ändra storleken) och Preview(förhandvisning) -->
             <div class="container">
                 <div id="editor" class="editor"></div>
-                <div class="resizer" id="resizer"></div>
+                <div id="resizer" class="resizer"></div>
                 <iframe id="preview" class="preview"></iframe>
             </div>
         </div>
 
-        <!-- CodeMirror-bibliotek -->
+        <!-- CodeMirror 5 -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
 
         <!-- Viktigt! XML krävs för att HTML och autokomplettering ska fungera -->
@@ -123,7 +125,16 @@
         <!-- Stöd för för kodformatering -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/format/formatting.min.js"></script>
 
-        <!-- Ladda Emmet-plugin för CodeMirror -->
+        <!-- Linting -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/lint/lint.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/lint/css-lint.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/lint/javascript-lint.min.js"></script>
+
+        <!-- ESLint och CSSLint -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/eslint/8.54.0/eslint.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/stylelint/15.10.1/stylelint.min.js"></script>
+
+        <!-- Nerladdat Emmet-plugin för CodeMirror -->
         <!-- <script src="https://cdn.jsdelivr.net/npm/@emmetio/codemirror-plugin/dist/emmet-codemirror-plugin.min.js"></script> -->
         <script src="codemirror/emmet/emmet-codemirror-plugin.min.js"></script>
 

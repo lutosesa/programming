@@ -4,11 +4,11 @@ const editor = CodeMirror(document.getElementById('editor'), {
     theme: 'paraiso-light',
     lineNumbers: true,
     lineWrapping: false,
-    // readOnly: false,
     autoCloseTags: true,
     autoCloseBrackets: true,
     foldGutter: true, // Aktivera kodfällning
     gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'], // Lägg till fällningsikon
+    lint: true,
     extraKeys: {
         'Ctrl-Space': 'autocomplete', // Aktivera autokomplettering med Ctrl-Space
         'Ctrl-Shift-F': formatCode,
@@ -164,6 +164,37 @@ document.getElementById('decreaseFont').addEventListener('click', function() {
     currentFontSize -= 2; // Minska med 2px
     updateFontSize();
   }
+});
+
+
+// CSS-LINTING
+CodeMirror.registerHelper("lint", "css", function(text) {
+    var found = [];
+    if (!text.includes("{") || !text.includes("}")) {
+        found.push({
+            from: CodeMirror.Pos(0, 0),
+            to: CodeMirror.Pos(0, text.length),
+            message: "CSS-regler bör vara inom { }.",
+            severity: "warning"
+        });
+    }
+    return found;
+});
+
+// JAVASCRIPT-LINTING med ESLint
+CodeMirror.registerHelper("lint", "javascript", function(text) {
+    var found = [];
+    try {
+        new Function(text);
+    } catch (err) {
+        found.push({
+            from: CodeMirror.Pos(0, 0),
+            to: CodeMirror.Pos(0, text.length),
+            message: err.message,
+            severity: "error"
+        });
+    }
+    return found;
 });
 
 
