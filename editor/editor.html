@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="sv">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Webb Editor</title>
+
+        <link rel="icon" type="image/x-icon" href="img/favicon.ico" />
+
+        <!-- CodeMirror-stilar -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css" />
+
+        <!-- CodeMirror Hinting-stil -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/hint/show-hint.min.css"
+        />
+
+        <!-- Font Awesome för ikoner -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+        <!--Theme-->
+        <link rel="stylesheet" href="codemirror/theme/mdn-like.css" />
+        <link rel="stylesheet" href="codemirror/theme/paraiso-light.css" />
+
+        <link rel="stylesheet" href="css/style.css" />
+    </head>
+    <body>
+        <div class="editor-container">
+            <!-- Verktygsfält -->
+            <div class="toolbar">
+                <div class="toolbar-left">
+                    <img src="img/favicon.ico" alt="favicon-bild" width="25" height="25" class="img-brand" />
+                    <span class="span-title-a">Webb</span> Editor
+                    <span class="span-title-b">(HTML, CSS, JavaScript)</span>
+
+                    <button onclick="runCode()" class="btn-run" title="Kör koden">
+                        <i class="fas fa-play"></i>
+                        <span class="span-text">Kör koden</span>
+                    </button>
+
+                    <button onclick="clearCode()" class="btn-clear">
+                        <i class="fas fa-trash-alt"></i>
+                        <span class="span-text">Rensa kod</span>
+                    </button>
+
+                    <button onclick="formatCode()" class="btn-format">
+                        <i class="fas fa-align-left"></i>
+                        <span class="span-text">Formatera kod</span>
+                    </button>
+
+                    <button onclick="toggleFoldAll()" class="btn-fold">
+                        <i class="fas fa-compress"></i>
+                        <span class="span-text">Fäll ihop kod</span>
+                    </button>
+
+                    <button id="decreaseFont" class="btn-textsize" title="Minska textstorlek">
+                        <i class="fas fa-minus"></i>
+                    </button>
+
+                    <button id="increaseFont" class="btn-textsize" title="Öka textstorlek">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+
+                <!-- Container för temaväljaren som placeras till höger -->
+                <div class="toolbar-right">
+                    <button id="toggleTheme" class="btn-toggle" title="Byt tema">
+                        <span class="btn-toggle-sun active">
+                            <i class="fa-solid fa-sun icon-sun"></i>
+                        </span>
+                        <span class="btn-toggle-moon inactive">
+                            <i class="fa-regular fa-moon icon-moon"></i>
+                        </span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Layout med Editor och Preview -->
+            <div class="container">
+                <div id="editor" class="editor"></div>
+                <div class="resizer" id="resizer"></div>
+                <iframe id="preview" class="preview"></iframe>
+            </div>
+        </div>
+
+        <!-- CodeMirror-bibliotek -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
+
+        <!-- Viktigt! XML krävs för att HTML och autokomplettering ska fungera -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/xml/xml.min.js"></script>
+
+        <!-- Stöd för HTML, CSS, JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/htmlmixed/htmlmixed.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/javascript/javascript.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/css/css.min.js"></script>
+
+        <!-- CodeMirror Hinting-system -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/hint/show-hint.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/hint/xml-hint.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/hint/html-hint.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/hint/css-hint.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/hint/javascript-hint.min.js"></script>
+
+        <!-- Stöd för stängning av taggar och måsvingar, hakparenteser och vanliga parenteser -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/edit/closetag.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/edit/closebrackets.js"></script>
+
+        <!-- Code Folding -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/fold/foldcode.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/fold/foldgutter.min.js"></script>
+
+        <!-- Stöd för att fälla ihop olika språk -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/fold/xml-fold.min.js"></script>
+        <!-- För HTML -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/fold/brace-fold.min.js"></script>
+        <!-- För JavaScript och CSS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/fold/comment-fold.min.js"></script>
+        <!-- För kommentarer -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/fold/indent-fold.min.js"></script>
+        <!-- Indenterad kod -->
+
+        <!-- Stöd för för kodformatering -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/format/formatting.min.js"></script>
+
+        <!-- Ladda Emmet-plugin för CodeMirror -->
+        <!-- <script src="https://cdn.jsdelivr.net/npm/@emmetio/codemirror-plugin/dist/emmet-codemirror-plugin.min.js"></script> -->
+        <script src="codemirror/emmet/emmet-codemirror-plugin.min.js"></script>
+
+        <script src="js/script.js"></script>
+    </body>
+</html>
