@@ -1,65 +1,43 @@
 // INITIERAR CODEMIRROR
 const editor = CodeMirror(document.getElementById('editor'), {
     mode: 'htmlmixed',
-    theme: 'paraiso-light',
+    theme: 'paraiso-dark',
     lineNumbers: true,
     lineWrapping: false,
     autoCloseTags: true,
     autoCloseBrackets: true,
-    foldGutter: true, // Aktivera kodfällning
-    gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'], // Lägg till fällningsikon
+    foldGutter: true,
+    gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
     lint: true,
     extraKeys: {
-        'Ctrl-Space': 'autocomplete', // Aktivera autokomplettering med Ctrl-Space
+        'Ctrl-Space': 'autocomplete',
         'Ctrl-Shift-F': formatCode,
-        'Ctrl-M': (cm) => cm.foldCode(cm.getCursor()), // Tangentbordsgenväg för att fälla ihop kod vid markören
-        'Ctrl-Shift-M': (cm) => cm.execCommand('unfoldAll'), // Öppna all kod
-        Tab: 'emmetExpandAbbreviation', // Använd TAB för att expandera Emmet-kortkommandon
-        'Ctrl-Q': 'emmetExpandAbbreviation', // Alternativ tangentbordsgenväg
+        'Ctrl-M': (cm) => cm.foldCode(cm.getCursor()),
+        'Ctrl-Shift-M': (cm) => cm.execCommand('unfoldAll'),
+        Tab: 'emmetExpandAbbreviation',
+        'Ctrl-Q': 'emmetExpandAbbreviation',
     },
     value: '',
 });
 
-// FÖR ATT FÄLLA IHOP/EXPANDERA ALL KOD
+// FUNKTION FÖR ATT KOLLA OM KOD ÄR HOPFÄLLD OCH VÄXLA
 function toggleFoldAll() {
-    const totalLines = editor.lineCount();
-    let isFolded = false;
-
-    // Kontrollera om koden redan är hopfälld
-    for (let i = 0; i < totalLines; i++) {
-        let marks = editor.findMarksAt(CodeMirror.Pos(i, 0));
-        if (marks.length > 0) {
-            isFolded = true;
-            break;
+    const isFolded = editor.getAllMarks().length > 0;
+    editor.operation(() => {
+        for (let i = 0; i < editor.lineCount(); i++) {
+            editor.foldCode(CodeMirror.Pos(i, 0), null, isFolded ? 'unfold' : 'fold');
         }
-    }
-
-    // Växla mellan att fälla ihop och öppna
-    for (let i = 0; i < totalLines; i++) {
-        if (isFolded) {
-            editor.foldCode(CodeMirror.Pos(i, 0), null, 'unfold');
-        } else {
-            editor.foldCode(CodeMirror.Pos(i, 0), null, 'fold');
-        }
-    }
+    });
 }
-
-
-
 
 // LIVE FÖRHANDSVISNING
-editor.on('change', () => {
-    runCode();
-});
+editor.on('change', runCode);
 
-
-// FUNKTIONEN FÖR ATT HÄMTA KODBLOCKET VIA URL-parametrar
+// HÄMTAR KODBLOCK FRÅN URL ELLER LOCALSTORAGE
 function getQueryParam(param) {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(param);
+    return new URLSearchParams(window.location.search).get(param);
 }
 
-// När sidan laddas, hämta rätt kodblock från sessionStorage
 window.onload = () => {
     const codeId = getQueryParam('id') || sessionStorage.getItem('codeId');
     const exampleCode = sessionStorage.getItem('exampleCode') || '';
@@ -68,142 +46,102 @@ window.onload = () => {
         console.log(`Laddar kodblock med ID: ${codeId}`);
     }
 
-    editor.setValue(exampleCode); // Sätt koden i editorn
+    editor.setValue(exampleCode);
     runCode();
 };
 
-
 // KÖR KODEN
 function runCode() {
-    const code = editor.getValue();
-    const preview = document.getElementById('preview');
-    preview.srcdoc = code;
+    document.getElementById('preview').srcdoc = editor.getValue();
 }
-
 
 // RENSAR EDITORN
 function clearCode() {
     editor.setValue('');
-    document.getElementById('preview').srcdoc = '';
+    runCode();
 }
 
-
-// FORMATERAR KODEN I EDITORN
+// FORMATERAR KODEN
 function formatCode() {
-    const totalLines = editor.lineCount();
     editor.operation(() => {
-        for (let i = 0; i < totalLines; i++) {
+        for (let i = 0; i < editor.lineCount(); i++) {
             editor.indentLine(i, 'smart');
         }
     });
 }
 
-
-
 // VÄXLING AV TEMAN
-const darkTheme = 'paraiso-light';  
-const lightTheme = 'mdn-like';
+const themes = {
+    dark: 'paraiso-dark',
+    light: 'mdn-like',
+};
 
-// Sätt utgångsvärdet för editorn (mörkt tema)
-editor.setOption('theme', darkTheme);
+const toggleBtn = document.getElementById('toggleTheme');
+const sunIcon = document.querySelector('.btn-toggle-sun');
+const moonIcon = document.querySelector('.btn-toggle-moon');
 
-// Hämta toggle-knappen
-const toggleBtn  = document.getElementById('toggleTheme'); 
-const sunIcon    = document.querySelector('.btn-toggle-sun');
-const moonIcon   = document.querySelector('.btn-toggle-moon');
+function switchTheme() {
+    const isDark = editor.getOption('theme') === themes.dark;
+    editor.setOption('theme', isDark ? themes.light : themes.dark);
 
-// Lägg till eventlyssnare för knappen
-toggleBtn.addEventListener('click', function() {
-    if (editor.getOption('theme') === darkTheme) {
-        // Om vi är i mörkt tema, byt till ljust tema
-        editor.setOption('theme', lightTheme);
-        // Uppdatera ikonerna: gör mån-ikonen aktiv och solikonen inaktiv
-        sunIcon.classList.remove('active');
-        sunIcon.classList.add('inactive');
-        moonIcon.classList.remove('inactive');
-        moonIcon.classList.add('active');
-        toggleBtn.style.backgroundColor = '#333333';
-        
-    } else {
-        // Om vi är i ljust tema, byt till mörkt tema
-        editor.setOption('theme', darkTheme);
-        // Uppdatera ikonerna: gör solikonen aktiv och mån-ikonen inaktiv
-        sunIcon.classList.remove('inactive');
-        sunIcon.classList.add('active');
-        moonIcon.classList.remove('active');
-        moonIcon.classList.add('inactive');
-        toggleBtn.style.backgroundColor = '#d0d0d2';
-    }
-});
-
-
-
-// FONTSTORLEKSÄNDRINGAR
-// Sätt en startstorlek, exempelvis 14px
-let currentFontSize = 14;
-
-// Hämta referensen till CodeMirror-wrappern
-// Detta element innehåller all editorinnehåll
-const editorWrapper = editor.getWrapperElement();
-
-// Funktion för att uppdatera fontstorleken
-function updateFontSize() {
-  editorWrapper.style.fontSize = currentFontSize + 'px';
-  editor.refresh(); // Nödvändigt för att CodeMirror ska räkna om radhöjd med ny fontstorlek
+    sunIcon.classList.toggle('active', !isDark);
+    sunIcon.classList.toggle('inactive', isDark);
+    moonIcon.classList.toggle('active', isDark);
+    moonIcon.classList.toggle('inactive', !isDark);
+    toggleBtn.style.backgroundColor = isDark ? '#333333' : '#ffffff';
 }
 
-// Lägg till eventlyssnare för knapparna
-document.getElementById('increaseFont').addEventListener('click', function() {
-  currentFontSize += 2; // Öka med 2px
-  updateFontSize();
-});
+toggleBtn.addEventListener('click', switchTheme);
 
-document.getElementById('decreaseFont').addEventListener('click', function() {
-  // Se till att storleken inte blir för liten
-  if (currentFontSize > 8) {
-    currentFontSize -= 2; // Minska med 2px
-    updateFontSize();
-  }
-});
+// FONTSTORLEKSÄNDRINGAR
+let currentFontSize = 14;
+const editorWrapper = editor.getWrapperElement();
 
+function updateFontSize(change) {
+    currentFontSize = Math.max(8, currentFontSize + change);
+    editorWrapper.style.fontSize = currentFontSize + 'px';
+    editor.refresh();
+}
+
+document.getElementById('increaseFont').addEventListener('click', () => updateFontSize(2));
+document.getElementById('decreaseFont').addEventListener('click', () => updateFontSize(-2));
 
 // CSS-LINTING
-CodeMirror.registerHelper("lint", "css", function(text) {
-    var found = [];
-    if (!text.includes("{") || !text.includes("}")) {
-        found.push({
-            from: CodeMirror.Pos(0, 0),
-            to: CodeMirror.Pos(0, text.length),
-            message: "CSS-regler bör vara inom { }.",
-            severity: "warning"
-        });
-    }
-    return found;
+CodeMirror.registerHelper('lint', 'css', (text) => {
+    return !text.includes('{') || !text.includes('}')
+        ? [
+              {
+                  from: CodeMirror.Pos(0, 0),
+                  to: CodeMirror.Pos(0, text.length),
+                  message: 'CSS-regler bör vara inom { }.',
+                  severity: 'warning',
+              },
+          ]
+        : [];
 });
 
-// JAVASCRIPT-LINTING med ESLint
-CodeMirror.registerHelper("lint", "javascript", function(text) {
-    var found = [];
+// JAVASCRIPT-LINTING MED ESLint
+CodeMirror.registerHelper('lint', 'javascript', (text) => {
     try {
         new Function(text);
+        return [];
     } catch (err) {
-        found.push({
-            from: CodeMirror.Pos(0, 0),
-            to: CodeMirror.Pos(0, text.length),
-            message: err.message,
-            severity: "error"
-        });
+        return [
+            {
+                from: CodeMirror.Pos(0, 0),
+                to: CodeMirror.Pos(0, text.length),
+                message: err.message,
+                severity: 'error',
+            },
+        ];
     }
-    return found;
 });
 
-
-
-// FUNKTION FÖR ATT HANTERA MUSDRAGNING FÖR RESIZER
+// MUSDRAGNING FÖR RESIZER
 const resizer = document.getElementById('resizer');
 let isDragging = false;
 
-resizer.addEventListener('mousedown', (e) => {
+resizer.addEventListener('mousedown', () => {
     isDragging = true;
     document.body.style.cursor = 'col-resize';
 });
@@ -212,20 +150,11 @@ document.addEventListener('mousemove', (e) => {
     if (!isDragging) return;
 
     const container = document.querySelector('.container');
-    const resizer = document.getElementById('resizer');
+    let newWidth = e.clientX - container.getBoundingClientRect().left;
+    newWidth = Math.max(100, Math.min(container.offsetWidth - 100, newWidth));
 
-    // Beräkna den nya bredden för editorn
-    const containerRect = container.getBoundingClientRect();
-    let newWidth = e.clientX - containerRect.left;
-
-    // Begränsa minsta och största bredd
-    newWidth = Math.max(100, Math.min(containerRect.width - 100, newWidth));
-
-    // Sätt bredden för editor och preview
-    const editorElement = document.getElementById('editor');
-    const previewElement = document.getElementById('preview');
-    editorElement.style.width = `${newWidth}px`;
-    previewElement.style.width = `${containerRect.width - newWidth - resizer.offsetWidth}px`;
+    document.getElementById('editor').style.width = `${newWidth}px`;
+    document.getElementById('preview').style.width = `${container.offsetWidth - newWidth - resizer.offsetWidth}px`;
 });
 
 document.addEventListener('mouseup', () => {

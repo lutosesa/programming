@@ -5,12 +5,14 @@ body, html {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.editor-container {
-    position: relative; /* Om du senare vill positionera toolbaren absolut */
+/* Centrering och flexbox */
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-
-/* Verktygsfält */
+/* Toolbar */
 .toolbar {
     display: flex;
     align-items: center;
@@ -19,125 +21,99 @@ body, html {
     background: #333;
     color: #fff;
     border-bottom: 2px solid #444;   
-    font-size: 16px; /* Standard storlek för knapptext */
+    font-size: 16px;
 }
 
-
+/* Toolbar höger sektion */
 .toolbar-right {
-    /* display: flex; */
     align-items: center;
-
 }
+
+/* Knappar och toggles */
 .btn-toggle {
     border: 1px solid #6a6a6c;
     border-radius: 45px;
-    background: #d0d0d2;
-    color: #ffffff; 
+    background: #ffffff;
     cursor: pointer;
-    display:flex;
+    display: flex;
     align-items: center; 
 }
 .btn-toggle:hover {
     border: 1px solid #b347d0;
 }
-.icon-sun {
-    border: 1px solid rgb(255, 255, 255);
+
+/* Ikoner för ljus/mörkt läge */
+.icon-sun, .icon-moon {
     border-radius: 50%;
     padding: 2px;
+}
+
+.icon-sun {
+    border: 1px solid rgb(226, 223, 223);
     background: rgb(255, 255, 255);
     color: rgb(98, 96, 96);
-    align-items: start;
 }
+
 .icon-moon {
     border: 1px solid rgb(116, 113, 113);
-    border-radius: 50%;
-    padding: 2px;
     background: rgb(91, 90, 90);
 }
-/* Aktiva ikoner visas med full opacitet */
+
+/* Aktiv/inaktiv ikon-opacity */
 .btn-toggle .active {
-  opacity: 1;
-  color: inherit; /* Använd standardfärg, eller ange en specifik färg */
-  transition: opacity 0.3s ease;
+    opacity: 1;
+    color: inherit;
+    transition: opacity 0.3s ease;
 }
-/* Inaktiva ikoner visas nedtonade */
 .btn-toggle .inactive {
-    opacity: 0.1;
+    opacity: 0;
     transition: opacity 0.3s ease;
 }
 
-
-
-/* Vänsterdel (behåll dina existerande stilar eller lägg till nya) */
+/* Toolbar vänster sektion */
 .toolbar-left {
     display: flex;
     align-items: center;
-    gap: 10px; /* lite mellanrum mellan elementen */
+    gap: 10px;
 }
-.toolbar-left button {
+
+/* Generella knappinställningar */
+.btn {
     border: none;
+    border-radius: 10px;
     padding: 4px 10px;
     cursor: pointer;
     color: #ffffff; 
-    font-weight: 100;
+    font-size: 12px;
     transition: background-color 0.3s ease;
-    font-size: 12px; /* Standard storlek för knapptext */
 }
-.img-brand {
-    margin: 0 10px;
-}
-.span-title-b {
-    margin-right: 10px;
-}
-/* Storlek på ikoner */
-.toolbar button i {
-    font-size: 16px; 
-}
-.btn-run {
-    border-radius: 5px;
-    background-color: #0a942a;
-}
-.btn-run:hover {
-    background-color: #1cdd46;
-}
-.btn-clear {
-    border-radius: 5px;
-    background-color: #aa0a1a;
-}
-.btn-clear:hover {
-    background-color: #d04b59;
-}
-.btn-format {
-    border-radius: 5px;
-    background-color: #0b6a93;
-}
-.btn-format:hover {
-    background-color: #4fb7e4;
-}
-.btn-fold {
-    border-radius: 5px;
-    background-color: #6f0973;
-}
-.btn-fold:hover {
-    background-color: #c744cb;
-}
+
+.btn-run { background-color: #0a942a; }
+.btn-run:hover { background-color: #1cdd46; }
+
+.btn-clear { background-color: #aa0a1a; }
+.btn-clear:hover { background-color: #d04b59; }
+
+.btn-format { background-color: #0b6a93; }
+.btn-format:hover { background-color: #4fb7e4; }
+
+.btn-fold { background-color: #6f0973; }
+.btn-fold:hover { background-color: #c744cb; }
+
 .btn-textsize {
-  background: green;
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
-  padding: 5px;
-  font-size: 16px;
+    background: green;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    padding: 3px 8px;
+    font-size: 14px;
 }
 
 .btn-textsize:hover {
-  background: rgb(44, 222, 44);
+    background: rgb(44, 222, 44);
 }
 
- 
-
-
-/* Layout: Flexbox */
+/* Layout och responsivitet */
 .container {
     display: flex;
     flex: 1;
@@ -147,13 +123,11 @@ body, html {
     padding: 10px;
 }
 
-/* Editor och Preview */
 .editor, .preview {
     height: 100%;
     border-radius: 5px;
 }
 
-/* Förbered flexbehållare för responsiv design */
 .editor {
     width: 50%;
     background: #282A36;
@@ -168,38 +142,32 @@ body, html {
     background: #fff;
 }
 
-/* Resizer (för att justera bredden) */
+/* Resizer */
 .resizer {
     width: 3px;
-    height: calc(100vh - 50px); /* Om toolbarens höjd är 50px */
+    height: calc(100vh - 50px);
     background-color: #bbb;
     cursor: col-resize;
     position: relative;
 }
-
 .resizer:hover {
     background-color: #c82333;
 }
 
-
+/* CodeMirror Anpassningar */
 .CodeMirror-gutters {
     float: left !important;
-    text-align: left !important; /* eller left-justera innehållet */
+    text-align: left !important;
 }
 
-
-/* Grundinställningar för foldguttern */
 .CodeMirror-foldgutter {
     width: 10px !important;
-    /* cursor: pointer; */
-    padding-right: 2px; 
+    padding-right: 2px;
 }
 
-/* Pseudo-elementen – sätt dem att visas som inline-block */
 .CodeMirror-foldgutter-open::after,
 .CodeMirror-foldgutter-folded::after {
     display: inline-block !important;
-    position: relative; 
     opacity: 0 !important;
     transition: opacity 0.3s ease !important;
 }
@@ -207,11 +175,10 @@ body, html {
 .CodeMirror-foldgutter-open:hover::after,
 .CodeMirror-foldgutter-folded:hover::after {
     opacity: 1 !important;
-} 
+}
 
-/* Dina befintliga stilar för innehållet i pseudo-elementen */
 .CodeMirror-foldgutter-open::after {
-    content: "▼"; /* Pilar nedåt när koden är öppen */
+    content: "▼";
     font-size: 16px;
     color: red;
     margin-right: 2px;
@@ -219,157 +186,102 @@ body, html {
 }
 
 .CodeMirror-foldgutter-folded::after {
-    content: "▶"; /* Pilar åt höger när koden är hopfälld */
+    content: "▶";
     font-size: 12px;
     color: red;
     margin-right: 1px;
     cursor: pointer !important;
 }
 
-
-
-
-
 .CodeMirror-scroll {
     overflow-x: auto !important;
 }
 
 .CodeMirror {
-  height: 100vh !important;
+    height: 100vh !important;
 }
 
-/* Media Queries för att hantera små skärmar */
-@media (max-width: 970px) {
-
-    .img-brand {
-        margin: 0 5px;
-    }
-
-    /* Dölj en del av texten */
-    .toolbar .span-title-b {
-        display: none;
-    }
-    
-    /* Dölj texten och visa endast ikoner */
-    .toolbar button span.span-text {
-        display: none;
-    }
-
-    .toolbar button i {
-        display: inline-block; /* Visa ikoner */
-    }
+/* Media Queries */
+@media (max-width: 905px) {
+    .img-brand { margin: 0 5px; }
+    .toolbar .span-title-c { display: none; }
+    .toolbar button span.span-text { display: none; }
+    .toolbar button i { display: inline-block; }
 }
 
-/* Media Queries för att hantera små skärmar */
 @media (max-width: 768px) {
-    .container {
-        flex-direction: column;
-    }
+    .container { flex-direction: column; }
     .editor, .preview {
         flex: 1;
         width: 100%;
         height: 50vh;
     }
-    .resizer {
-        display: none;
-    }
-
-    .img-brand {
-        margin: 0 2px;
-    }
-
-    /* Dölj en del av texten */
-    .toolbar .span-title-b {
-        display: none;
-    }
-    
-    /* Dölj texten och visa endast ikoner */
-    .toolbar button span.span-text {
-        display: none;
-    }
-
-    .toolbar button i {
-        display: inline-block; /* Visa ikoner */
-    }
-
-    .CodeMirror {        
-        height: 50vh !important;       
-    }
-
-    .CodeMirror-foldgutter-open::after,
-    .CodeMirror-foldgutter-folded::after {
-        display: inline-block !important;
-        position: relative; 
-        opacity: 1 !important;
-        transition: opacity 0.3s ease !important;
-    }
+    .resizer { display: none; }
+    .CodeMirror { height: 50vh !important; }
 }
 
-/* Media Queries för att hantera små skärmar */
-@media (max-width: 505px) {
-
-    .img-brand {
-        margin: 0 0;
-    }
-    /* Dölj en del av texten */
-    .toolbar .span-title-a {
-        display: none;
-    }
-
-    /* Storlek på ikoner */
-    .toolbar button i {
-        font-size: 10px; 
-    }
-
-    .toolbar button {
-        margin-left: 2px;
-    }
-
-    .CodeMirror {        
-        height: 50vh !important;       
-    }
+@media (max-width: 475px) {
+    .img-brand { margin: 0; }
+    .toolbar .span-title-a { display: none; }
+    .toolbar button i { font-size: 11px; }
+    .toolbar .btn { margin-left: 2px; }
 }
 
-@media (max-width: 415px) {
-  /* Gör toolbaren vertikal och positionera den längst till vänster */
-  .toolbar {
-    flex-direction: column;
-    align-items: flex-start;
-    /* Gör toolbaren absolut positionerad om du vill att den ska ligga över editorn */
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 50px;  /* Justera bredden efter behov */
-    height: 100%;
-    padding: 10px 0;
-    background: #333;
-    border: none;
-    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-  }
+@media (max-width: 410px) {
+    .toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 40px;
+        height: 100%;
+        padding: 10px 0;
+        box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        font-size: 12px;
+    }
+    .toolbar-left, .toolbar-right {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 100%;
+        align-items: center;
+    }
+    .btn {
+        margin: 2px 0;
+        padding: 2px 2px;
+        width: 25px;
+        height: 25px; 
+    }
+    .container { margin-left: 40px; }
 
-  /* Ställ in att både vänster och höger delar av toolbaren ska ligga i en kolumn */
-  .toolbar-left,
-  .toolbar-right {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 100%;
-    align-items: center; /* Centrerar knapparna horisontellt inom toolbaren */
-    margin: 5px 0;
-  }
+    .btn-toggle {
+        display: flex;
+        flex-direction: column; /* Gör knappen stående */
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: auto;
+        margin-bottom: 20px; /* Justerar avstånd från andra knappar */
+        padding: 3px;
+    }
 
-  /* Minska knapparnas storlek så de passar i den vertikala toolbaren */
-  .btn {
-    margin: 5px 0;
-    padding: 5px;
-    font-size: 12px;
-    width: 40px;
-    height: 40px;
-    text-align: center;
-  }
+    .btn-toggle .icon-sun, 
+    .btn-toggle .icon-moon {
+        margin: 1px 0; /* Lägger mellanrum mellan ikonerna */
+    }
 
-  /* Flytta editorn så att den inte täcks av toolbaren */
-  .container {
-    margin-left: 40px;  /* Justera efter toolbarens bredd */
-  }
+    .CodeMirror-gutter, .CodeMirror-linenumbers {
+      width: 22px !important;
+    }
+
+    .CodeMirror-foldgutter {
+        width: 10px !important;
+    }
+
+    .toolbar .span-title-a, .span-title-b { 
+        display:block;
+        font-weight: bold;
+        margin: 0;
+    }
 }

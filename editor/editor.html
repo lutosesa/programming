@@ -21,7 +21,7 @@
 
         <!-- Nerladdad temma -  Theme-->
         <link rel="stylesheet" href="codemirror/theme/mdn-like.css" />
-        <link rel="stylesheet" href="codemirror/theme/paraiso-light.css" />
+        <link rel="stylesheet" href="codemirror/theme/paraiso-dark.css" />
 
         <link rel="stylesheet" href="css/style.css" />
     </head>
@@ -33,34 +33,35 @@
                 <!-- Vänster verktygsfält - varumärkes bild och titel, flera knappar  -->
                 <div class="toolbar-left">
                     <img src="img/favicon.ico" alt="favicon-bild" width="25" height="25" class="img-brand" />
-                    <span class="span-title-a">Webb</span> Editor
-                    <span class="span-title-b">(HTML, CSS, JavaScript)</span>
+                    <span class="span-title-a">Webb</span>
+                    <span class="span-title-b">Editor</span> 
+                    <span class="span-title-c">(HTML, CSS, JavaScript)</span>
 
-                    <button onclick="runCode()" class="btn-run" title="Kör koden">
+                    <button onclick="runCode()" class="btn btn-run" title="Kör koden">
                         <i class="fas fa-play"></i>
                         <span class="span-text">Kör koden</span>
                     </button>
 
-                    <button onclick="clearCode()" class="btn-clear">
+                    <button onclick="clearCode()" class="btn btn-clear">
                         <i class="fas fa-trash-alt"></i>
                         <span class="span-text">Rensa kod</span>
                     </button>
 
-                    <button onclick="formatCode()" class="btn-format">
+                    <button onclick="formatCode()" class="btn btn-format">
                         <i class="fas fa-align-left"></i>
                         <span class="span-text">Formatera kod</span>
                     </button>
 
-                    <button onclick="toggleFoldAll()" class="btn-fold">
+                    <button onclick="toggleFoldAll()" class="btn btn-fold">
                         <i class="fas fa-compress"></i>
                         <span class="span-text">Fäll ihop kod</span>
                     </button>
 
-                    <button id="decreaseFont" class="btn-textsize" title="Minska textstorlek">
+                    <button id="decreaseFont" class="btn btn-textsize" title="Minska textstorlek">
                         <i class="fas fa-minus"></i>
                     </button>
 
-                    <button id="increaseFont" class="btn-textsize" title="Öka textstorlek">
+                    <button id="increaseFont" class="btn btn-textsize" title="Öka textstorlek">
                         <i class="fas fa-plus"></i>
                     </button>
                 </div>
@@ -69,10 +70,10 @@
                 <div class="toolbar-right">
                     <button id="toggleTheme" class="btn-toggle" title="Byt tema">
                         <span class="btn-toggle-sun active">
-                            <i class="fa-solid fa-sun icon-sun"></i>
+                            <i class="fa-solid fa-sun icon-sun" style="color: rgb(220, 240, 42)"></i>
                         </span>
                         <span class="btn-toggle-moon inactive">
-                            <i class="fa-regular fa-moon icon-moon"></i>
+                            <i class="fa-regular fa-moon icon-moon" style="color: white"></i>
                         </span>
                     </button>
                 </div>
