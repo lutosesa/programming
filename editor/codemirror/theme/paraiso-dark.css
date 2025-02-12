@@ -8,12 +8,6 @@
 
 */
 
-/* .cm-s-paraiso-dark.CodeMirror {
-    background: #2f1e2e;
-    height: 100vh;
-    color: #b9b6b0;
-} */
-
 .cm-s-paraiso-dark.CodeMirror {
     background: #3c3b3b;
     height: 100vh;
@@ -33,7 +27,7 @@
     background: rgba(65, 50, 63, 0.99);
 }
 .cm-s-paraiso-dark .CodeMirror-gutters {
-    background: #535252;   /* #2f1e2e; */
+    background: #535252;
     border-right: 0px;
 }
 .cm-s-paraiso-dark .CodeMirror-guttermarker {
@@ -47,7 +41,7 @@
     text-align: left;
 }
 .cm-s-paraiso-dark .CodeMirror-cursor {
-    border-left: 1px solid #8d8687;
+    border-left: 3px solid #ffffff;
 }
 
 .cm-s-paraiso-dark span.cm-comment {

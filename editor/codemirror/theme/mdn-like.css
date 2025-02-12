@@ -36,7 +36,7 @@
     text-align: left;
 }
 .cm-s-mdn-like .CodeMirror-cursor {
-    border-left: 2px solid #222;
+    border-left: 3px solid #111111;
 }
 
 .cm-s-mdn-like .cm-keyword {
