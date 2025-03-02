@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
     htmlEditor = CodeMirror.fromTextArea(document.getElementById('html-editor'), {
         mode: 'htmlmixed',
         lineNumbers: true,
-        lineWrapping: true,
+        lineWrapping: false,
         theme: 'paraiso-dark',
         styleActiveLine: true, // Aktivera markering av aktuell rad
         autoCloseTags: true, // Auto-avslut HTML-taggar

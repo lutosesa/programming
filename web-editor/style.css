@@ -187,8 +187,12 @@ body {
 
 h3 {
     color: #333;
-    padding-bottom: 5px;
+    display: flex;
+    align-items: center; /* Centrerar vertikalt */
+    justify-content: center; /* Centrerar horisontellt */
     text-align: center;
+    padding: 2px 0px;
+    /* border-top: 1px solid #333; */
     border-bottom: 1px solid #333;
 }
 
@@ -261,6 +265,10 @@ h3 {
         width: 100%;
         height: 50vh;
     }
+    .editor-container {
+         border-bottom: 1px solid #333;
+    }
+
     .resizer {
         display: none;
     }
@@ -383,4 +391,7 @@ h3 {
         margin-bottom: 2px;
         padding: 2px;
     }
-}
+    h3 {
+        font-size: 15px;
+    }
+} 
