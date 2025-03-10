@@ -1,397 +1,832 @@
-// Globala CodeMirror editor-variabler
-var htmlEditor, cssEditor, jsEditor;
+let htmlEditor, cssEditor, jsEditor;
+let htmlValue = '<!DOCTYPE html>\n<html>\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1.0">\n<title>Test</title>\n</head>\n<body>\n<div class="content">\n<h1>Välkommen till min webbsida!</h1>\n<p>\nLorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta vel, est eveniet perferendis optio facere ut qui consequuntur nam excepturi provident ad consequatur assumenda commodi dolorum ducimus, ipsam illo corporis adipisci laborum.\n</p>\n</div>\n</body>\n</html>';
+
+let cssValue =
+    '/* Börja CSS koda här!*/ \nhtml, body{ background-image: url("./img/background.jpg");background-size: cover;background-position: center;background-attachment: fixed;overflow: hidden;}\n.content {padding: 0 150px;height: 100vh; }\nh1 {color: blue;}\n\n@media (max-width: 1024px) {.content { padding: 0 60px;} }\n@media (max-width: 600px) {.content { padding: 0 15px;} }';
+
+let jsValue = '// Börja JavaScrip koda här!\nfunction hello() { \n\tconsole.log("Välkomna!"); \n}';
+
+// VÄXLA MELLAN EDITORERNA
+function switchEditor(editorType) {
+    document.querySelectorAll('button').forEach((button) => {
+        button.classList.remove('active');
+    });
+
+    document.querySelector(`button[data-editor="${editorType}"]`).classList.add('active');
+
+    document.getElementById('htmlEditor').style.display = 'none';
+    document.getElementById('cssEditor').style.display = 'none';
+    document.getElementById('jsEditor').style.display = 'none';
+
+    if (editorType === 'html') {
+        document.getElementById('htmlEditor').style.display = 'block';
+        htmlEditor.layout();
+    } else if (editorType === 'css') {
+        document.getElementById('cssEditor').style.display = 'block';
+        cssEditor.layout();
+    } else if (editorType === 'js') {
+        document.getElementById('jsEditor').style.display = 'block';
+        jsEditor.layout();
+    }
+}
+
+// KÖR PÅ FÖRHANDVISNING
+function runCode() {
+    const htmlCode = htmlEditor.getValue();
+    const cssCode = `<style>${cssEditor.getValue()}</style>`;
+    const jsCode = `<script>
+        try {
+            ${jsEditor.getValue()}
+        } catch (error) {
+            console.error('Fel i JavaScript:', error);
+        }
+    <\/script>`;
+
+    const outputFrame = document.getElementById('outputFrame');
+
+    if (outputFrame.contentDocument) {
+        outputFrame.contentDocument.open();
+        outputFrame.contentDocument.write(htmlCode + cssCode + jsCode);
+        outputFrame.contentDocument.close();
+
+        const iframeDocument = outputFrame.contentDocument;
+        const iframeBody = iframeDocument.body;
+
+        iframeBody.style.margin = 0;
+        iframeBody.style.padding = 0;
+        iframeBody.style.overflow = 'auto'; 
+
+        outputFrame.style.overflow = 'auto'; 
+
+        if (iframeBody.scrollHeight > window.innerHeight || iframeBody.scrollWidth > window.innerWidth) {
+            document.body.style.overflow = 'auto'; 
+        } else {
+            document.body.style.overflow = 'hidden'; 
+        }
+    }
+    captureConsoleLogs();
+}
+
+function captureConsoleLogs() {
+    const outputFrame = document.getElementById('outputFrame');
+    if (outputFrame.contentWindow) {
+        outputFrame.contentWindow.console.log = (msg) => parent.console.log('[Iframe log]:', msg);
+    }
+}
+
+// KÖR BROWSER
+function runBrowser() {
+    const htmlCode = htmlEditor.getValue();
+    const cssCode = `<style>${cssEditor.getValue()}</style>`;
+    const jsCode = `<script>
+        try {
+            ${jsEditor.getValue()}
+        } catch (error) {
+            console.error('Fel i JavaScript:', error);
+        }
+    <\/script>`;
+
+    function extractTitleFromHTML(html) {
+        const titleMatch = html.match(/<title>(.*?)<\/title>/);
+        return titleMatch ? titleMatch[1] : 'Förhandsvisning';
+    }
+
+    const pageTitle = extractTitleFromHTML(htmlCode);
+
+    const fullPage = `
+        <!DOCTYPE html>
+        <html lang="sv">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>${pageTitle}</title> <!-- Sätt dynamiskt titel här -->
+            ${cssCode}
+            <style>
+                /* Se till att det går att scrolla om innehållet är större än fönstret */
+                body, html {
+                    margin: 0;
+                    padding: 0;
+                    overflow: hidden;
+                }
+
+                /* Om du vill ta bort scrollbar på själva webbläsarfönstret */
+                body {
+                    overflow-x: hidden; /* Tar bort horisontell scrollbar */
+                    overflow-y: auto;   /* Aktiverar vertikal scroll om innehållet är större */
+                }
+            </style>
+        </head>
+        <body>
+            ${htmlCode}
+            ${jsCode}
+        </body>
+        </html>
+    `;
+
+    const newWindow = window.open();
+    newWindow.document.open();
+    newWindow.document.write(fullPage);
+    newWindow.document.close();
+}
+
+// RENSA KODEN
+function clearCode(option) {
+    htmlEditor.setValue('');
+    cssEditor.setValue('');
+    jsEditor.setValue('');
+    const output = document.getElementById('outputFrame').contentWindow.document;
+    output.open();
+    output.write('');
+    output.close();
+
+    if (option === 'onAlert') showAlert('info', 'HTML CSS JS Editor', 'Koden har tagits bort från editorerna!');
+}
+
+// UPPDATERAR EDITORS FÖNSTRET STORLEK
+function updateEditorSize() {
+    const editorHeight = document.querySelector('.editors').offsetHeight;
+
+    document.getElementById('htmlEditor').style.height = editorHeight + 'px';
+    document.getElementById('cssEditor').style.height = editorHeight + 'px';
+    document.getElementById('jsEditor').style.height = editorHeight + 'px';
+
+    htmlEditor.layout();
+    cssEditor.layout();
+    jsEditor.layout();
+}
+
+// TEMA
+const themes = {
+    dark: 'vs-dark',
+    light: 'vs-light',
+};
+let currentTheme = themes.dark;
+const toggleBtn = document.getElementById('toggleTheme');
+const sunIcon = document.querySelector('.btn-toggle-sun img');
+const moonIcon = document.querySelector('.btn-toggle-moon img');
+
+// FUNKTION UPPDATERAR TEMA-KNAPPEN
+function updateToggleButton() {
+    toggleBtn.style.backgroundColor = currentTheme === themes.dark ? '#ffffff' : '#333333';
+
+    sunIcon.parentElement.classList.toggle('active', currentTheme === themes.dark);
+    sunIcon.parentElement.classList.toggle('inactive', currentTheme === themes.light);
+    moonIcon.parentElement.classList.toggle('active', currentTheme === themes.light);
+    moonIcon.parentElement.classList.toggle('inactive', currentTheme === themes.dark);
+}
+
+// FUNKTION VÄXLAR TEMA
+function switchTheme() {
+    currentTheme = currentTheme === themes.dark ? themes.light : themes.dark;
+
+    [htmlEditor, cssEditor, jsEditor].forEach((editor) => {
+        editor.updateOptions({ theme: currentTheme });
+    });
+
+    updateToggleButton();
+}
+
+// ALERT-FUNKTION
+function showAlert(type, title, message) {
+    const alertTitle = document.getElementById('alertTitle');
+    const alertMessage = document.getElementById('alertMessage');
+    const alertIcon = document.getElementById('alertIcon');
+    const alertBox = document.getElementById('customAlert');
+    const closeButton = document.getElementById('closeButton');
+
+    // Välj ikon baserat på typen
+    let iconSrc = '';
+    closeButton.style.background = 'none';  
+    switch (type) {
+        case 'info':
+            iconSrc = 'img/alert-info.png';
+            closeButton.style.background = '#007bff';        
+            break;
+        case 'error':
+            iconSrc = 'img/alert-error.png';
+            closeButton.style.background = '#D60000'; 
+            break;
+        case 'warning':
+            iconSrc = 'img/alert-warning.png';
+            closeButton.style.background = '#FFD800'; 
+            break;
+        case 'success':
+            iconSrc = 'img/alert-success.png';
+            closeButton.style.background = '#40C057'; 
+            break;
+        default:
+            iconSrc = 'img/alert-default.png';
+            closeButton.style.background = '#5698C5';      
+    }
+
+    closeButton.addEventListener('mouseenter', () => {
+        closeButton.style.opacity = '0.8';
+        closeButton.style.transform = 'scale(1.02)';
+        closeButton.style.boxShadow = '0px 6px 12px rgba(0, 0, 0, 0.7)';
+    });
+
+    closeButton.addEventListener('mouseleave', () => {
+        closeButton.style.opacity = '1';
+        closeButton.style.transform = 'scale(1)';
+        closeButton.style.boxShadow = '0px 4px 6px rgba(0, 0, 0, 0.2)';
+    });
+
+    alertTitle.innerText = title;
+    alertMessage.innerText = message;
+    alertIcon.src = iconSrc;
+    alertIcon.style.display = 'block';
+
+    alertBox.style.display = 'flex';
+}
+
+function closeAlert() {
+    document.getElementById('customAlert').style.display = 'none';
+}
+
+// DEFINIERAR TEMAS
+function definesThemes () {
+    monaco.editor.defineTheme('vs-light', {
+        base: 'vs',
+        inherit: true,
+        rules: [
+            { token: '', foreground: '000000', background: 'ffffff' },
+            { token: 'comment', foreground: '119a0a' },
+            { token: 'string', foreground: 'bf616a' },
+            { token: 'keyword', foreground: '5e81ac' },
+            { token: 'number', foreground: 'b48ead' },
+            { token: 'function', foreground: 'd08770' },
+            { token: 'tag', foreground: '0000ff', fontStyle: 'bold' },
+            { token: 'attribute.name', foreground: '8fbcbb' },
+            { token: 'attribute.value', foreground: 'a3be8c' },
+        ],
+        colors: {
+            'editor.background': '#ffffff',
+            'editor.foreground': '#000000',
+            'editorCursor.foreground': '#d08770',
+            'editor.lineHighlightBackground': '#e7eaf1',
+            'editor.selectionBackground': '#d4e9ef',
+            'editorLineNumber.foreground': '#000000',
+            'editorGutter.background': '#e7eaf1',
+        },
+    });
+
+    monaco.editor.defineTheme('vs-dark', {
+        base: 'vs-dark',
+        inherit: true,
+        rules: [
+            { token: 'tag', fontStyle: 'bold' },
+            { token: 'comment', foreground: '61ec59' },
+        ],
+        colors: {
+            'editor.lineHighlightBackground': '#444',
+            'editorLineNumber.foreground': '#FFFFFF',
+            'editorGutter.background': '#444',
+        },
+    });
+}
+
+// INSTÄLLA EDITORER
+function getResponsiveFontSize() {
+    if (window.innerWidth <= 600) return 10;
+    if (window.innerWidth <= 1024) return 12;
+    return 14;
+}
+
+function setupEditors() {
+    htmlEditor = monaco.editor.create(document.getElementById('htmlEditor'), {
+        value: '',
+        language: 'html',
+        theme: currentTheme,
+        fontSize: getResponsiveFontSize(),
+        tabSize: 2,
+        insertSpaces: true,
+        automaticLayout: true,
+        formatOnType: true,
+        formatOnPaste: true,
+        wordWrap: 'on',
+        folding: true,
+        foldingStrategy: 'indentation',
+        autoClosingTags: true,
+        autoIndent: 'advanced',
+        autoClosingBrackets: 'always',
+        autoClosingQuotes: 'always',
+        matchBrackets: 'always',
+        suggestOnTriggerCharacters: true,
+        scrollBeyondLastLine: false, // Förhindrar onödig vertikal scroll
+        scrollbar: {
+            vertical: 'auto', // Visar scrollbar bara om det behövs
+            horizontal: 'auto', // Visar scrollbar bara om det behövs
+        },
+        minimap: { enabled: false },
+    });
+
+    cssEditor = monaco.editor.create(document.getElementById('cssEditor'), {
+        value: '',
+        language: 'css',
+        theme: currentTheme,
+        fontSize: getResponsiveFontSize(),
+        autoClosingBrackets: 'always',
+        autoClosingQuotes: 'always',
+        matchBrackets: 'always',
+        suggestOnTriggerCharacters: true,
+        minimap: { enabled: false },
+    });
+
+    jsEditor = monaco.editor.create(document.getElementById('jsEditor'), {
+        value: '',
+        language: 'javascript',
+        theme: currentTheme,
+        fontSize: getResponsiveFontSize(),
+        autoClosingBrackets: 'always',
+        autoClosingQuotes: 'always',
+        matchBrackets: 'always',
+        suggestOnTriggerCharacters: true,
+        minimap: { enabled: false },
+    });
+
+    document.getElementById('htmlEditor').style.display = 'block';
+}
+
 
 document.addEventListener('DOMContentLoaded', function () {
-    /***************************************************
-     * INITIALISERA CODEMIRROR-EDITORER (redigerare)
-     **************************************************/
-    htmlEditor = CodeMirror.fromTextArea(document.getElementById('html-editor'), {
-        mode: 'htmlmixed',
-        lineNumbers: true,
-        lineWrapping: false,
-        theme: 'paraiso-dark',
-        styleActiveLine: true, // Aktivera markering av aktuell rad
-        autoCloseTags: true, // Auto-avslut HTML-taggar
-        matchBrackets: true, // Matchning av parenteser
-        foldGutter: true,
-        colorpicker: true,
-        gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
-        extraKeys: {
-            'Ctrl-Space': 'autocomplete', // Aktiverar autokomplettering med Ctrl + Space
-            'Ctrl-Shift-F': formatCode,
-            'Ctrl-E': (cm) => cm.execCommand('emmetExpandAbbreviation'), // Emmet expand
-            'Ctrl-Q': (cm) => cm.foldCode(cm.getCursor()), // Ctrl+Q för att fälla ihop/expandera enskilda block
-        },
-    });
+    require.config({ paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs' } });
 
-    cssEditor = CodeMirror.fromTextArea(document.getElementById('css-editor'), {
-        mode: 'css',
-        lineNumbers: true,
-        theme: 'paraiso-dark',
-        styleActiveLine: true, // Aktivera markering av aktuell rad
-        autoCloseBrackets: true, // Auto-avslut (), [], {}
-        matchBrackets: true, // Matchning av parenteser
-        foldGutter: true,
-        colorpicker: true,
-        gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
-        extraKeys: {
-            'Ctrl-Space': 'autocomplete', // Aktiverar autokomplettering med Ctrl + Space
-            'Ctrl-Shift-F': formatCode,
-            'Ctrl-E': (cm) => cm.execCommand('emmetExpandAbbreviation'), // Emmet expand
-            'Ctrl-Q': (cm) => cm.foldCode(cm.getCursor()), // Ctrl+Q för att fälla ihop/expandera enskilda block
-        },
-    });
+    require(['vs/editor/editor.main'], function () {
+        definesThemes();
+        setupEditors();
 
-    jsEditor = CodeMirror.fromTextArea(document.getElementById('js-editor'), {
-        mode: 'javascript',
-        lineNumbers: true,
-        theme: 'paraiso-dark',
-        styleActiveLine: true, // Aktivera markering av aktuell rad
-        autoCloseBrackets: true, // Auto-avslut (), [], {}
-        matchBrackets: true, // Markera matchande bracket
-        foldGutter: true,
-        gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
-        extraKeys: {
-            'Ctrl-Space': 'autocomplete', // Aktiverar autokomplettering med Ctrl + Space
-            'Ctrl-Shift-F': formatCode,
-            'Ctrl-E': (cm) => cm.execCommand('emmetExpandAbbreviation'), // Emmet expand
-            'Ctrl-Q': (cm) => cm.foldCode(cm.getCursor()), // Ctrl+Q för att fälla ihop/expandera enskilda block
-        },
-    });
-
-    /********************************************
-     * KOD FÖR ATT UPPDATERA FÖRHANDSVISNINGEN
-     ********************************************/
-    const previewFrame = document.getElementById('preview').contentDocument;
-    function updatePreview() {
-        previewFrame.open();
-        previewFrame.write(`
-            <html>
-                <head>
-                    <style>${cssEditor.getValue()}</style>
-                </head>
-                <body>
-                    ${htmlEditor.getValue()}
-                </body>
-            </html>
-        `);
-        previewFrame.close();
-
-        // Lägg till JavaScript separat
-        const scriptTag = document.createElement('script');
-        scriptTag.textContent = jsEditor.getValue();
-        previewFrame.body.appendChild(scriptTag);
-    }
-    // Lyssna på ändringar i alla editors
-    [htmlEditor, cssEditor, jsEditor].forEach((editor) => {
-        editor.on('change', updatePreview);
-    });
-
-    /************************************************
-     * HÄMTAR KODBLOCK FRÅN URL ELLER LOCALSTORAGE
-     ************************************************/
-    function getQueryParam(param) {
-        return new URLSearchParams(window.location.search).get(param);
-    }
-
-    window.onload = () => {
-        const codeId = getQueryParam('id') || sessionStorage.getItem('codeId');
-        let exampleCode = sessionStorage.getItem('exampleCode') || '';
-
-        if (codeId) {
-            console.log(`Laddar kodblock med ID: ${codeId}`);
+        // HÄMTAR KODBLOCK FRÅN URL
+        function getQueryParam(param) {
+            return new URLSearchParams(window.location.search).get(param);
         }
 
-        // Splitta koden i HTML, CSS och JavaScript
-        let htmlCode = '',
-            cssCode = '',
-            jsCode = '';
+        window.onload = () => {
+            const codeId = getQueryParam('id') || sessionStorage.getItem('codeId');
+            let exampleCode = sessionStorage.getItem('exampleCode') || '';
 
-        if (exampleCode) {
-            // Matcha CSS inom <style> ... </style>
-            const cssMatch = exampleCode.match(/<style[^>]*>([\s\S]*?)<\/style>/);
-            cssCode = cssMatch ? cssMatch[1].trim() : '';
+            if (codeId !== null) {
+                console.log(`Laddar kodblock med ID: ${codeId}`);
 
-            // Matcha JS inom <script> ... </script>
-            const jsMatch = exampleCode.match(/<script[^>]*>([\s\S]*?)<\/script>/);
-            jsCode = jsMatch ? jsMatch[1].trim() : '';
+                let htmlCode = '',
+                    cssCode = '',
+                    jsCode = '';
 
-            // HTML är resten av koden utan <style> och <script>
-            htmlCode = exampleCode
-                .replace(/<style[^>]*>[\s\S]*?<\/style>/, '')
-                .replace(/<script[^>]*>[\s\S]*?<\/script>/, '')
-                .trim();
+                if (exampleCode) {
+                    // Matcha CSS inom <style> ... </style>
+                    const cssMatch = exampleCode.match(/<style[^>]*>([\s\S]*?)<\/style>/);
+                    cssCode = cssMatch ? cssMatch[1].trim() : '';
+
+                    // Matcha JS inom <script> ... </script>
+                    const jsMatch = exampleCode.match(/<script[^>]*>([\s\S]*?)<\/script>/);
+                    jsCode = jsMatch ? jsMatch[1].trim() : '';
+
+                    // HTML är resten av koden utan <style> och <script>
+                    htmlCode = exampleCode
+                        .replace(/<style[^>]*>[\s\S]*?<\/style>/, '')
+                        .replace(/<script[^>]*>[\s\S]*?<\/script>/, '')
+                        .trim();
+                }
+
+                // Ladda koden i CodeMirror-editorerna
+                htmlEditor.setValue(htmlCode);
+                cssEditor.setValue(cssCode);
+                jsEditor.setValue(jsCode);
+            } else {
+                htmlEditor.setValue(htmlValue);
+                cssEditor.setValue(cssValue);
+                jsEditor.setValue(jsValue);
+            }
+            // Uppdatera förhandsvisningen
+            //runCode();
+            formatHtmlEditor();
+            formatCssEditor();
+            formatJsEditor();
+        };
+
+        toggleBtn.addEventListener('click', switchTheme);
+
+        emmetMonaco.emmetHTML(monaco);
+        emmetMonaco.emmetCSS(monaco);
+
+        let typingTimer;
+        htmlEditor.onDidChangeModelContent(scheduleRunCode);
+        cssEditor.onDidChangeModelContent(scheduleRunCode);
+        jsEditor.onDidChangeModelContent(scheduleRunCode);
+        function scheduleRunCode() {
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(runCode, 500);
         }
 
-        // Ladda koden i CodeMirror-editorerna
-        htmlEditor.setValue(htmlCode);
-        cssEditor.setValue(cssCode);
-        jsEditor.setValue(jsCode);
+        window.addEventListener('resize', updateEditorSize);
+        setTimeout(updateEditorSize, 100);
 
-        // Uppdatera förhandsvisningen
-        updatePreview();
-    };
+        function getCurrentFontSize() {
+            return htmlEditor.getOption(monaco.editor.EditorOption.fontSize);
+        }
 
-    /********************************************
-     * KOD FÖR ATT HANTERA KNAPPTRYCKNINGAR
-     ********************************************/
-    const buttons = document.querySelectorAll('.btn-editor'); // Alla editor-knappar
 
-    buttons.forEach((button) => {
-        button.addEventListener('click', function () {
-            // Ta bort 'active' från alla knappar
-            buttons.forEach((btn) => btn.classList.remove('active'));
+        window.addEventListener('resize', () => {
+            let responsiveFontSize = getResponsiveFontSize();
+            htmlEditor.updateOptions({ fontSize: responsiveFontSize });
+            updateIframeFontSize(responsiveFontSize);
+        });
 
-            // Lägg till 'active' på den knapp som klickades
-            this.classList.add('active');
+        // UPPDATERING AV IFRAME-TEXTSTORLEKEN
+        function updateIframeFontSize(fontSize) {
+            const iframe = document.getElementById('outputFrame');
 
-            // Visa den valda editorn baserat på knappen
-            const target = this.getAttribute('data-target');
-            document.getElementById('html-container').classList.add('hidden');
-            document.getElementById('css-container').classList.add('hidden');
-            document.getElementById('js-container').classList.add('hidden');
+            if (iframe.contentDocument) {
+                const iframeBody = iframe.contentDocument.body;
+                iframeBody.style.fontSize = fontSize + 'px';
+            }
+        }
 
-            if (target === 'html') {
-                document.getElementById('html-container').classList.remove('hidden');
-                htmlEditor.refresh();
-            } else if (target === 'css') {
-                document.getElementById('css-container').classList.remove('hidden');
-                cssEditor.refresh();
-            } else if (target === 'js') {
-                document.getElementById('js-container').classList.remove('hidden');
-                jsEditor.refresh();
+        // EDITOR-TEXTSTORLEKEN ÄNDRAS
+        function changeFontSize(delta) {
+            let currentSize = getCurrentFontSize();
+            let newSize = currentSize + delta;
+
+            if (newSize < 8) newSize = 8;
+            if (newSize > 30) newSize = 30;
+
+            htmlEditor.updateOptions({ fontSize: newSize });
+            cssEditor.updateOptions({ fontSize: newSize });
+            jsEditor.updateOptions({ fontSize: newSize });
+
+            updateIframeFontSize(newSize + 1);
+        }
+
+        document.getElementById('increaseFont').addEventListener('click', () => changeFontSize(1));
+        document.getElementById('decreaseFont').addEventListener('click', () => changeFontSize(-1));
+        document.getElementById('outputFrame').addEventListener('load', () => {
+            updateIframeFontSize(getCurrentFontSize());
+        });
+
+        // RESIZER - justerar både editor och preview storleken på bredden
+        const resizer = document.getElementById('resizer');
+        const editors = document.getElementById('editors');
+        const outputFrame = document.getElementById('outputFrame');
+        const container = document.getElementById('editor-container');
+        let isDragging = false;
+
+        resizer.addEventListener('mousedown', function (event) {
+            isDragging = true;
+            document.body.style.cursor = 'col-resize';
+
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', stopDragging);
+        });
+
+        function onMouseMove(event) {
+            if (!isDragging) return;
+
+            let containerRect = container.getBoundingClientRect();
+            let newWidth = event.clientX - containerRect.left;
+            newWidth = Math.max(200, Math.min(containerRect.width - 150, newWidth));
+
+            editors.style.width = `${newWidth}px`;
+            outputFrame.style.width = `${containerRect.width - newWidth - resizer.offsetWidth}px`;
+
+            monaco.editor.getModels().forEach((model) => model._associatedEditor?.layout());
+        }
+        function stopDragging() {
+            isDragging = false;
+            document.body.style.cursor = 'default';
+            document.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mouseup', stopDragging);
+        }
+
+        // FORMATERA KODEN
+        function formatHtmlEditor() {
+            let position = htmlEditor.getPosition();
+            htmlEditor
+                .getAction('editor.action.formatDocument')
+                .run()
+                .then(() => {
+                    let content = htmlEditor.getValue();
+
+                    let lines = content.split('\n');
+                    let cleanedLines = [];
+                    let previousLine = '';
+
+                    for (let i = 0; i < lines.length; i++) {
+                        let line = lines[i].trim();
+                        if (
+                            previousLine === '<html>' ||
+                            previousLine === '<head>' ||
+                            previousLine === '</head>' ||
+                            previousLine === '</body>'
+                        ) {
+                            if (line === '') continue;
+                        }
+
+                        cleanedLines.push(lines[i]);
+                        previousLine = line;
+                    }
+
+                    htmlEditor.setValue(cleanedLines.join('\n'));
+
+                    setTimeout(() => {
+                        try {
+                            if (htmlEditor) {
+                                emmetMonaco.emmetHTML(monaco);
+                            }
+                        } catch (error) {
+                            console.error('Emmet reload error:', error);
+                        }
+                    }, 100);
+
+                    htmlEditor.setPosition(position);
+                    htmlEditor.focus();
+                });
+        }
+
+        function formatCssEditor() {
+            cssEditor.getAction('editor.action.formatDocument').run();
+        }
+        function formatJsEditor() {
+            jsEditor.getAction('editor.action.formatDocument').run();
+        }
+
+        document.getElementById('cssEditor').addEventListener('click', formatCssEditor);
+        document.getElementById('jsEditor').addEventListener('click', formatJsEditor);
+        document.getElementById('format-button').addEventListener('click', function () {
+            formatHtmlEditor();
+            formatCssEditor();
+            formatJsEditor();
+        });
+
+        // MENY för att skapa, öppna och spara fil
+        const menuButton = document.getElementById('menuButton');
+        const popupMenu = document.getElementById('popupMenu');
+        const closeMenu = document.getElementById('closeMenu');
+
+        menuButton.addEventListener('click', function (event) {
+            event.stopPropagation();
+            popupMenu.classList.toggle('show');
+        });
+
+        closeMenu.addEventListener('click', function () {
+            popupMenu.classList.remove('show');
+        });
+
+        document.addEventListener('click', function (event) {
+            if (!popupMenu.contains(event.target) && event.target !== menuButton) {
+                popupMenu.classList.remove('show');
             }
         });
-    });
 
-    /********************************************
-     * KOD FÖR ATT RENSA ALLA EDITORER
-     ********************************************/
-    function clearCode() {
-        htmlEditor.setValue('');
-        cssEditor.setValue('');
-        jsEditor.setValue('');
-        updatePreview();
-    }
-    document.getElementById('clear-button').addEventListener('click', clearCode);
-
-    /********************************************
-     * KOD FÖR FORMATERING
-     ********************************************/
-    function formatCode() {
-        // Formatera HTML med Prettier
-        const formattedHTML = prettier.format(htmlEditor.getValue(), {
-            parser: 'html',
-            plugins: [prettierPlugins.html],
-            printWidth: 80,
-            tabWidth: 2,
-            useTabs: false,
+        document.getElementById('newFile').addEventListener('click', function () {
+            showFilePrompt('create');
         });
 
-        // Formatera CSS med Prettier
-        const formattedCSS = prettier.format(cssEditor.getValue(), {
-            parser: 'css',
-            plugins: [prettierPlugins.css],
-            printWidth: 80,
-            tabWidth: 2,
-            useTabs: false,
+        document.getElementById('saveFile').addEventListener('click', function () {
+            showFilePrompt('save');
         });
 
-        // Formatera JavaScript med Prettier
-        const formattedJS = prettier.format(jsEditor.getValue(), {
-            parser: 'babel',
-            plugins: [prettierPlugins.babel],
-            printWidth: 80,
-            tabWidth: 2,
-            useTabs: false,
+        document.getElementById('openFile').addEventListener('click', function () {
+            openFile();
         });
 
-        // Uppdatera editorerna med formaterad kod
-        htmlEditor.setValue(formattedHTML.trim());
-        cssEditor.setValue(formattedCSS.trim());
-        jsEditor.setValue(formattedJS.trim());
-    }
-    document.getElementById('format-button').addEventListener('click', formatCode);
+        // SKAPA PROMPT för att spara och skapa fil
+        function showFilePrompt(actionType) {
+            let overlay = document.createElement('div');
+            overlay.style.position = 'fixed';
+            overlay.style.top = '0';
+            overlay.style.left = '0';
+            overlay.style.width = '100%';
+            overlay.style.height = '100%';
+            overlay.style.background = 'rgba(0, 0, 0, 0.4)';
+            overlay.style.display = 'flex';
+            overlay.style.justifyContent = 'center';
+            overlay.style.alignItems = 'center';
+            overlay.style.zIndex = '1000';
 
-    /*******************************************************
-     * KOD FÖR ATT FÄLLA IHOP OCH EXPANDERA (Code Folding)
-     *******************************************************/
-    function toggleFoldAll(editors) {
-        editors.forEach((editor) => {
-            const isFolded = editor.getAllMarks().length > 0;
-            editor.operation(() => {
-                for (let i = 0; i < editor.lineCount(); i++) {
-                    editor.foldCode(CodeMirror.Pos(i, 0), null, isFolded ? 'unfold' : 'fold');
-                }
+            let modalBox = document.createElement('div');
+            modalBox.style.background = 'white';
+            modalBox.style.padding = '20px';
+            modalBox.style.borderRadius = '8px';
+            modalBox.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
+            modalBox.style.textAlign = 'center';
+            modalBox.style.animation = 'fadeIn 0.3s ease-in-out';
+
+            let title = document.createElement('h2');
+            title.innerText = actionType === 'create' ? 'Välj filtyp' : 'Spara fil som';
+            title.style.marginBottom = '15px';
+
+            let fileNameInput;
+            if (actionType === 'save') {
+                fileNameInput = document.createElement('input');
+                fileNameInput.type = 'text';
+                fileNameInput.placeholder = 'Ange endast filens namn...';
+                fileNameInput.style.padding = '8px';
+                fileNameInput.style.marginBottom = '10px';
+                fileNameInput.style.width = '80%';
+                fileNameInput.style.border = '1px solid #ccc';
+                fileNameInput.style.borderRadius = '5px';
+                fileNameInput.style.textAlign = 'center';
+
+                fileNameInput.addEventListener('focus', function () {
+                    this.placeholder = '';
+                });
+
+                fileNameInput.addEventListener('blur', function () {
+                    if (this.value.trim() === '') this.placeholder = 'Ange endast filens namn...';
+                });
+
+                modalBox.appendChild(fileNameInput);
+                modalBox.appendChild(document.createElement('br'));
+            }
+
+            let buttons = ['html', 'css', 'js'].map((type) => {
+                let btn = document.createElement('button');
+                btn.innerText = type.toUpperCase();
+                btn.style.margin = '5px';
+                btn.style.width = '70px';
+                btn.style.border = 'none';
+                btn.style.borderRadius = '5px';
+                btn.style.cursor = 'pointer';
+                btn.style.fontSize = '16px';
+                btn.style.color = 'white';
+                btn.style.transition = 'all 0.2s ease-in-out';
+
+                btn.style.background = type === 'html' ? '#E34F26' : type === 'css' ? '#1572B6' : '#F7DF1E';
+                btn.style.boxShadow = '0px 4px 6px rgba(0, 0, 0, 0.2)'; // Liten skugga
+
+                btn.addEventListener('mouseenter', () => {
+                    btn.style.opacity = '0.8';
+                    btn.style.transform = 'scale(1.05)';
+                    btn.style.boxShadow = '0px 6px 12px rgba(0, 0, 0, 0.7)';
+                });
+
+                btn.addEventListener('mouseleave', () => {
+                    btn.style.opacity = '1';
+                    btn.style.transform = 'scale(1)';
+                    btn.style.boxShadow = '0px 4px 6px rgba(0, 0, 0, 0.2)';
+                });
+
+                btn.onclick = () => {
+                    if (actionType === 'create') {
+                        createFile(type);
+                    } else if (actionType === 'save') {
+                        if (!fileNameInput.value.trim()) {
+                            showAlert('warning', 'För att spara', 'ANGE filens namn i textfältet!');
+                            return;
+                        }
+                        saveFile(type, fileNameInput.value);
+                    }
+                    document.body.removeChild(overlay);
+                };
+                return btn;
+            });
+
+            let cancelButton = document.createElement('button');
+            cancelButton.innerText = 'Avbryt';
+            cancelButton.style.marginTop = '15px';
+            cancelButton.style.width = '70px';
+            cancelButton.style.border = 'none';
+            cancelButton.style.borderRadius = '5px';
+            cancelButton.style.cursor = 'pointer';
+            cancelButton.style.fontSize = '16px';
+            cancelButton.style.background = '#555';
+            cancelButton.style.color = 'white';
+            cancelButton.style.transition = 'all 0.2s ease-in-out';
+            cancelButton.style.boxShadow = '0px 4px 6px rgba(0, 0, 0, 0.2)';
+
+            cancelButton.addEventListener('mouseenter', () => {
+                cancelButton.style.opacity = '0.7';
+                cancelButton.style.transform = 'scale(1.05)';
+                cancelButton.style.boxShadow = '0px 4px 6px rgba(0, 0, 0, 0.8)';
+            });
+
+            cancelButton.addEventListener('mouseleave', () => {
+                cancelButton.style.opacity = '1';
+                cancelButton.style.transform = 'scale(1)';
+                cancelButton.style.boxShadow = '0px 4px 6px rgba(0, 0, 0, 0.2)';
+            });
+
+            cancelButton.onclick = () => document.body.removeChild(overlay);
+
+            modalBox.appendChild(title);
+            buttons.forEach((btn) => modalBox.appendChild(btn));
+            modalBox.appendChild(document.createElement('br'));
+            modalBox.appendChild(cancelButton);
+
+            overlay.appendChild(modalBox);
+            document.body.appendChild(overlay);
+        }
+
+        function createFile(fileType) {
+            popupMenu.classList.remove('show');
+            clearCode('offAlert');
+            if (fileType === 'html') {
+                switchEditor('html');
+                htmlEditor.setValue(
+                    '<!DOCTYPE html>\n<html>\n<head>\n<title>Ny Fil</title>\n</head>\n<body>\n\n</body>\n</html>'
+                );
+            } else if (fileType === 'css') {
+                switchEditor('css');
+                cssEditor.setValue('/* Ny CSS-fil */');
+            } else if (fileType === 'js') {
+                switchEditor('js');
+                jsEditor.setValue('// Ny JavaScript-fil');
+            }
+        }
+
+        function saveFile(fileType, fileName) {
+            let content = '';
+            if (fileType === 'html') {
+                content = htmlEditor.getValue();
+            } else if (fileType === 'css') {
+                content = cssEditor.getValue();
+            } else if (fileType === 'js') {
+                content = jsEditor.getValue();
+            }
+
+            if (!fileName.trim()) {
+                fileName = 'download';
+            }
+            const blob = new Blob([content], { type: 'text/plain' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = fileName + '.' + fileType;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        function openFile() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.html, .css, .js';
+            input.addEventListener('change', function (event) {
+                const file = event.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const content = e.target.result;
+                    if (file.name.endsWith('.html')) {
+                        htmlEditor.setValue(content);
+                        popupMenu.classList.remove('show');
+                    } else if (file.name.endsWith('.css')) {
+                        cssEditor.setValue(content);
+                        popupMenu.classList.remove('show');
+                    } else if (file.name.endsWith('.js')) {
+                        jsEditor.setValue(content);
+                        popupMenu.classList.remove('show');
+                    } else {
+                        showAlert('Öppna fil', 'Endast .html, .css och .js filer stöds!');
+                    }
+                };
+                reader.readAsText(file);
+            });
+            input.click();
+        }
+
+        // TOOLTIP
+        document.querySelectorAll('.btn , .img-logo').forEach((button) => {
+            let tooltip;
+
+            button.addEventListener('mouseenter', function () {
+                if (tooltip) tooltip.remove();
+
+                tooltip = document.createElement('div');
+                tooltip.className = 'custom-tooltip';
+                tooltip.innerText = this.getAttribute('data-title');
+                document.body.appendChild(tooltip);
+
+                let rect = this.getBoundingClientRect();
+                tooltip.style.left = `${rect.right + window.scrollX + 2}px`;
+                tooltip.style.top = `${rect.top + window.scrollY + rect.height / 2 - tooltip.offsetHeight / 2}px`;
+
+                setTimeout(() => {
+                    tooltip.remove();
+                }, 1500);
+            });
+
+            button.addEventListener('mouseleave', function () {
+                if (tooltip) tooltip.remove();
             });
         });
-    }
-    document.getElementById('collapse-button').addEventListener('click', () => {
-        toggleFoldAll([htmlEditor, cssEditor, jsEditor]);
-    });
 
-    /********************************************
-     * LOREM IPSUM-GENERATOR
-     ********************************************/
-    function generateLoremIpsum(wordCount) {
-        const loremBase =
-            'Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
-        let words = loremBase.split(' ');
-        let output = [];
+        // ALERT RUTA FÖR WEBB INFO
+        const buttonInfo = document.getElementById('buttonInfo');
+        const popupInfo = document.getElementById('popupInfo');
+        const buttonClose = document.getElementById('buttonClose');
 
-        while (output.length < wordCount) {
-            output = output.concat(words);
-        }
+        buttonInfo.addEventListener('click', function () {
+            popupInfo.style.display = 'flex';
+        });
 
-        return output.slice(0, wordCount).join(' ');
-    }
-    // Lyssna på tangenttryckningar i alla editorer
-    [htmlEditor, cssEditor, jsEditor].forEach((editor) => {
-        editor.on('keydown', function (cm, event) {
-            if (event.key === 'Enter') {
-                let cursor = cm.getCursor();
-                let line = cm.getLine(cursor.line);
+        buttonClose.addEventListener('click', function () {
+            popupInfo.style.display = 'none';
+        });
 
-                let match = line.match(/\blorem(\d+)\b/); // Matcha "loremXX"
-
-                if (match) {
-                    let wordCount = parseInt(match[1], 10);
-                    let loremText = generateLoremIpsum(wordCount);
-
-                    // Ersätt "loremXX" med genererad Lorem Ipsum-text
-                    cm.replaceRange(
-                        loremText,
-                        { line: cursor.line, ch: match.index },
-                        { line: cursor.line, ch: match.index + match[0].length }
-                    );
-
-                    event.preventDefault(); // Förhindra ny rad efter ersättning
-                }
+        window.addEventListener('click', function (event) {
+            if (event.target === popupInfo) {
+                popupInfo.style.display = 'none';
             }
         });
     });
-
-    /********************************************
-     * VÄXLING AV TEMAN FÖR ALLA EDITORER
-     ********************************************/
-    const themes = {
-        dark: 'paraiso-dark',
-        light: 'mdn-like',
-    };
-    // Hämta HTML-elementen
-    const toggleBtn = document.getElementById('toggleTheme');
-    const sunIcon = document.querySelector('.btn-toggle-sun');
-    const moonIcon = document.querySelector('.btn-toggle-moon');
-
-    // Hämta editorer
-    const editors = [htmlEditor, cssEditor, jsEditor];
-
-    function switchTheme() {
-        const isDark = htmlEditor.getOption('theme') === themes.dark;
-
-        // Växla temat för alla editorer
-        editors.forEach((editor) => {
-            editor.setOption('theme', isDark ? themes.light : themes.dark);
-        });
-
-        // Uppdatera ikon och bakgrund
-        sunIcon.classList.toggle('active', !isDark);
-        sunIcon.classList.toggle('inactive', isDark);
-        moonIcon.classList.toggle('active', isDark);
-        moonIcon.classList.toggle('inactive', !isDark);
-        toggleBtn.style.backgroundColor = isDark ? '#333333' : '#ffffff';
-    }
-    toggleBtn.addEventListener('click', switchTheme); // Lägg till eventlyssnare
-
-    /********************************************
-     * FONTSTORLEKSÄNDRINGAR FÖR ALLA EDITORER
-     ********************************************/
-    function changeFontSize(increase) {
-        const editors = [htmlEditor, cssEditor, jsEditor];
-
-        editors.forEach((editor) => {
-            const cmElement = editor.getWrapperElement();
-            let currentSize = parseInt(window.getComputedStyle(cmElement).fontSize);
-            let newSize = increase ? currentSize + 1 : currentSize - 1;
-
-            cmElement.style.fontSize = newSize + 'px';
-            editor.refresh(); // Uppdatera CodeMirror
-
-            // Justera storlek på pilar och gutter
-            const gutterWidth = Math.max(10, newSize); // Minsta bredd = 10px
-            const foldGutterStyle = document.createElement('style');
-            foldGutterStyle.innerHTML = `
-            .CodeMirror-foldgutter {
-                width: ${gutterWidth}px !important;
-            }
-            .CodeMirror-foldgutter-open::after {
-                font-size: ${newSize - 1}px !important;
-            }
-            .CodeMirror-foldgutter-folded::after {
-                font-size: ${newSize - 2}px !important;
-            }
-        `;
-
-            // Rensa gammal stil och lägg till den nya
-            document.head.querySelectorAll('style[data-fold-style]').forEach((el) => el.remove());
-            foldGutterStyle.setAttribute('data-fold-style', 'true');
-            document.head.appendChild(foldGutterStyle);
-        });
-    }
-    document.getElementById('increaseFont').addEventListener('click', () => changeFontSize(true));
-    document.getElementById('decreaseFont').addEventListener('click', () => changeFontSize(false));
-
-    /********************************************
-     * MUSDRAGNING FÖR RESIZER
-     ********************************************/
-    const resizer = document.getElementById('resizer');
-    let isDragging = false;
-
-    resizer.addEventListener('mousedown', () => {
-        isDragging = true;
-        document.body.style.cursor = 'col-resize';
-    });
-
-    document.addEventListener('mousemove', (e) => {
-        if (!isDragging) return;
-
-        const container = document.querySelector('.container');
-        let newWidth = e.clientX - container.getBoundingClientRect().left;
-        newWidth = Math.max(100, Math.min(container.offsetWidth - 100, newWidth));
-
-        document.getElementById('editor-section').style.width = `${newWidth}px`;
-        document.getElementById('preview-section').style.width = `${
-            container.offsetWidth - newWidth - resizer.offsetWidth
-        }px`;
-    });
-
-    document.addEventListener('mouseup', () => {
-        isDragging = false;
-        document.body.style.cursor = 'default';
-    });
-
-    /********************************************
-     * FÖR ATT KOMMENTERA BORT KOD
-     ********************************************/
-    function enableToggleComment(editor) {
-        editor.addKeyMap({
-            'Ctrl-M': function (cm) {
-                console.log("Ctrl + ' trycktes i CodeMirror!");
-                cm.execCommand('toggleComment');
-            },
-            'Cmd-M': function (cm) {
-                // För Mac
-                cm.execCommand('toggleComment');
-            },
-        });
-    }
-    // Anropa för varje editor
-    enableToggleComment(htmlEditor);
-    enableToggleComment(cssEditor);
-    enableToggleComment(jsEditor);
-
-    /*************************************************
-     * Uppdatera förhandsvisningen direkt vid start
-     ************************************************/
-    updatePreview();
 });
+

@@ -1,170 +1,155 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sv">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Test Webb Editor</title>
+        <title>Webb Editor</title>
         <link rel="icon" type="image/x-icon" href="img/favicon.ico" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css" />
-        <!-- CodeMirror CSS för autokomplettering -->
-        <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/hint/show-hint.min.css"
-        />
-
-        <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/codemirror-colorpicker/dist/codemirror-colorpicker.min.css"
-        />
-        <link rel="stylesheet" href="codemirror/theme/paraiso-dark.css" />
-        <link rel="stylesheet" href="codemirror/theme/mdn-like.css" />
         <link rel="stylesheet" href="style.css" />
     </head>
     <body>
-        <div class="content">
-            <div class="toolbar">
-                <div class="toolbar-left">
-                    <a href="https://lutosesa.github.io/programming/" target="_blank">
-                        <img class="img-brand" src="img/logo.png" alt="logo-bild" />
-                    </a>
-                    <span class="brand-text">
-                        <span class="brand-text-a">Webb</span>
-                        <span class="brand-text-b">Editor</span>
-                    </span>
+        <div class="toolbar">
+            <div class="container">
+                <img src="img/logo.png" alt="Logo-bild" class="img-logo" data-title="Webb Editor" />
 
-                    <button class="btn-editor btn-html active" data-target="html" title="HTML kod">
-                        <img src="img/tool-html.png" alt="html-bild" />
-                    </button>
-
-                    <button class="btn-editor btn-css" data-target="css" title="CSS kod">
-                        <img src="img/tool-css.png" alt="css-bild" />
-                    </button>
-
-                    <button class="btn-editor btn-js" data-target="js" title="JS kod">
-                        <img src="img/tool-js.png" alt="javascript-bild" />
-                    </button>
-
-                    <button id="clear-button" class="btn-tool btn-limit" title="Rensa koden">
-                        <img src="img/clear.png" alt="clear-bild" />
-                    </button>
-
-                    <button id="format-button" class="btn-tool" title="Formatera koden">
-                        <img src="img/format.png" alt="formatera-bild" />
-                    </button>
-
-                    <button id="collapse-button" class="btn-tool" title="fälla ihop koden">
-                        <img src="img/collapse.png" alt="kollapsa-bild" />
-                    </button>
-
-                    <button id="decreaseFont" class="btn-tool btn-limit" title="Minska textstorlek">
-                        <img src="img/minus.png" alt="minus-bild" />
-                    </button>
-                    <button id="increaseFont" class="btn-tool" title="Öka textstorlek">
-                        <img src="img/plus.png" alt="plus-bild" />
-                    </button>
-                </div>
-
-                <div class="toolbar-right">
-                    <button id="toggleTheme" class="btn-toggle" title="Byt tema">
-                        <span class="btn-toggle-sun active">
-                            <img src="img/sol.png" alt="sol-bild" class="icon-sun" />
-                        </span>
-                        <span class="btn-toggle-moon inactive">
-                            <img src="img/moon.png" alt="moon-bild" class="icon-moon" />
-                        </span>
-                    </button>
+                <button id="menuButton" class="btn btn-menu" data-title="Skapa, öppna, spara fil">
+                    <img src="img/menu.png" alt="meny-bild" />
+                </button>
+                <div id="popupMenu" class="popup-menu">
+                    <button id="newFile" class="btn-file"><img src="img/new.png" alt="" />&nbsp; Ny fil</button>
+                    <button id="openFile" class="btn-file"><img src="img/open.png" alt="" />&nbsp; Öppna fil</button>
+                    <button id="saveFile" class="btn-file"><img src="img/save.png" alt="" />&nbsp; Spara fil</button>
+                    <button id="closeMenu" class="btn-file"><img src="img/close.png" alt="" />&nbsp; Stäng</button>
                 </div>
             </div>
 
-            <!-- Container för editor och preview -->
-            <div id="editor-container" class="container">                
-                <!-- Vänster sektion (Editor) -->
-                <div id="editor-section" class="editor-section">
-                    <div class="editor-container" id="html-container">
-                        <h3><img src="img/web-html.png" alt="html-bild" width="21" height="21" />&nbsp;HTML</h3>
-                        <textarea id="html-editor"><h1>Hej, världen!</h1></textarea>
-                    </div>
-                    <div class="editor-container hidden" id="css-container">
-                        <h3><img src="img/web-css.png" alt="css-bild" width="21" height="21" />&nbsp;CSS</h3>
-                        <textarea id="css-editor">h1 { color: red; }</textarea>
-                    </div>
-                    <div class="editor-container hidden" id="js-container">
-                        <h3><img src="img/web-js.png" alt="js-bild" width="21" height="21" />&nbsp;JavaScript</h3>
-                        <textarea id="js-editor">console.log("Hello World!");</textarea>
+            <div class="container">
+                <button
+                    onclick="switchEditor('html')"
+                    class="btn btn-html active"
+                    data-editor="html"
+                    data-title="Visa HTML-editor"
+                >
+                    <img src="img/tool-html.png" alt="html-bild" />
+                </button>
+
+                <button onclick="switchEditor('css')" class="btn btn-css" data-editor="css" data-title="Visa CSS-editor">
+                    <img src="img/tool-css.png" alt="css-bild" />
+                </button>
+
+                <button onclick="switchEditor('js')" class="btn btn-js" data-editor="js" data-title="Visa JS-editor">
+                    <img src="img/tool-js.png" alt="javascript-bild" />
+                </button>
+            </div>
+
+            <div class="container">
+                <button onclick="runBrowser()" id="run-button" class="btn btn-run" data-title="Kör på webbläsaren">
+                    <img src="img/browser.png" alt="kör kod-bild" />
+                </button>
+
+                <button onclick="runCode()" id="run-button" class="btn btn-run" data-title="Kör koden">
+                    <img src="img/run.png" alt="kör kod-bild" />
+                </button>
+            </div>
+
+            <div class="container">
+                <button id="format-button" class="btn btn-format" data-title="Formattera koden">
+                    <img src="img/format.png" alt="format-bild" />
+                </button>
+
+                <button id="increaseFont" class="btn btn-increase" data-title="Öka kod-textstorlek">
+                    <img src="img/plus.png" alt="plus-bild" />
+                </button>
+
+                <button id="decreaseFont" class="btn btn-decrease" data-title="Minska kod-textstorlek">
+                    <img src="img/minus.png" alt="minus-bild" />
+                </button>
+
+                <button onclick="clearCode('onAlert')" id="clear-button" class="btn btn-clear" data-title="Rensa koden">
+                    <img src="img/clear.png" alt="clear-bild" />
+                </button>
+            </div>
+
+            <div class="container">
+                <button id="buttonInfo" class="btn btn-info" data-title="Info om Webb Editor">
+                    <img src="img/info.png" alt="info-bild" />
+                </button>
+                <div id="popupInfo" class="popup-info">
+                    <div class="popup-content">
+                        <h3>Information om Webb Editor</h3>
+                        <p
+                            >Detta är en kraftfull webb-editor som låter dig skapa och redigera webbsidor direkt i din
+                            webbläsare. Du kan använda den för att skriva HTML, CSS och JavaScript utan att behöva
+                            installera någon programvara.</p
+                        >
+                        <h4>Funktioner inkluderar:</h4>
+                        <dl>
+                            <dd>- Live-preview (förhandvisning)</dd>
+                            <dd>- Att köra koden på webbläsaren</dd>
+                            <dd>- Syntax highlighting</dd>
+                            <dd>- IntelliSense (kodförslag)</dd>
+                            <dd>- Kod-formattering</dd>
+                            <dd>- Möjlighet att fälla ihop kodblock för bättre överblick</dd>
+                            <dd>- Mörk och ljus tema</dd>
+                            <dd>- Öka och minska kod-textstorlek</dd>
+                            <dd>- Stänger automatiskt HTML-taggar</dd>
+                            <dd>- Stänger automatiskt parenteser och citattecken</dd>
+                            <dd>- Markera matchande parenteser</dd>
+                            <dd
+                                >- Kommentera med <b><i>ctrl + '</i></b></dd
+                            >
+                            <dd>- Sök- och ersättningsfunktion</dd>
+                            <dd>- Felsökning och varningar för syntaxfel</dd>
+                            <dt><b>Emmet-monaco</b></dt>
+                            <dd>- Snabbskrivning av HTML och CSS genom korta uttryck</dd>
+                            <dd
+                                >- Skriv <b>!</b> och tryck <b><i>Tab</i></b
+                                >, så får du en komplett HTML5-struktur</dd
+                            >
+                        </dl>
+                        <button id="buttonClose" class="btn-close">Stäng</button>
+                        <div class="popup-footer"> © 2025 Skapad av Tomas Serrano Santana </div>
                     </div>
                 </div>
 
-                <div id="resizer" class="resizer"></div>
-
-                <!-- Höger sektion (Förhandsvisning) -->
-                <div id="preview-section" class="preview-section">
-                    <h3><img src="img/preview1.png" alt="js-bild" width="21" height="21" />&nbsp;Förhandsvisning</h3>
-                    <iframe id="preview" class="preview"></iframe>
-                </div>
+                <button id="toggleTheme" class="btn btn-toggle" data-title="Byt tema">
+                    <span class="btn-toggle-sun active">
+                        <img src="img/sol.png" alt="sol-bild" class="icon-sun" />
+                    </span>
+                    <span class="btn-toggle-moon inactive">
+                        <img src="img/moon.png" alt="moon-bild" class="icon-moon" />
+                    </span>
+                </button>
             </div>
         </div>
 
-        <!-- CodeMirror version 5 -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
+        <div id="editor-container" class="editor-container">
+            <div id="editors" class="editors">
+                <div id="htmlEditor" class="editor"></div>
+                <div id="cssEditor" class="editor hidden"></div>
+                <div id="jsEditor" class="editor hidden"></div>
+            </div>
 
-        <!-- Viktigt! XML krävs för att HTML och autokomplettering ska fungera -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/xml/xml.min.js"></script>
+            <div id="resizer"></div>
 
-        <!-- Stöd för HTML, CSS, JS -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/htmlmixed/htmlmixed.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/css/css.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/javascript/javascript.min.js"></script>
+            <iframe id="outputFrame" class="outputFrame" scrolling="auto"></iframe>
+        </div>
 
-        <!-- Stöd för för kodformatering -->
-        <script src="https://unpkg.com/prettier@2.8.8/standalone.js"></script>
-        <script src="https://unpkg.com/prettier@2.8.8/parser-html.js"></script>
-        <script src="https://unpkg.com/prettier@2.8.8/parser-postcss.js"></script>
-        <script src="https://unpkg.com/prettier@2.8.8/parser-babel.js"></script>
-        <script>
-            const prettierPlugins = {
-                html: window.prettierPlugins.html,
-                css: window.prettierPlugins.postcss, // Fixar CSS-parsern
-                babel: window.prettierPlugins.babel,
-            };
-        </script>
+        <!-- Anpassad Alert Modal -->
+        <div id="customAlert" class="alert-modal" style="display: none">
+            <div class="alert-content">
+                <div class="alert-header">
+                    <img id="alertIcon" src="" alt="Alert Icon" />
+                    <h2 id="alertTitle"></h2>
+                </div>
+                <p id="alertMessage"></p>
+                <button id="closeButton" onclick="closeAlert()">OK</button>
+            </div>
+        </div>
 
-        <!-- CodeMirror Addons för auto-close och matchning -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/edit/closetag.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/edit/closebrackets.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/edit/matchbrackets.min.js"></script>
-
-        <!-- CodeMirror Addons för autokomplettering -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/hint/show-hint.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/hint/xml-hint.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/hint/html-hint.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/hint/css-hint.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/hint/javascript-hint.min.js"></script>
-
-        <!-- Code Folding -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/fold/foldcode.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/fold/foldgutter.min.js"></script>
-        <!-- Code Folding - Stöd för att fälla ihop olika språk -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/fold/xml-fold.min.js"></script>
-        <!-- HTML -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/fold/brace-fold.min.js"></script>
-        <!-- JS & CSS -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/fold/comment-fold.min.js"></script>
-        <!-- Kommentarer -->
-
-        <!-- jQuery krävs för Colorpicker -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <!-- Colorpicker-tillägg -->
-        <script src="https://cdn.jsdelivr.net/npm/codemirror-colorpicker/dist/codemirror-colorpicker.min.js"></script>
-
-        <!-- CodeMirror Addons för att hantera kommentarer -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/comment/comment.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/comment/continuecomment.min.js"></script>
-
-        <!-- Emmet-plugin för CodeMirror -->
-        <script src="codemirror/emmet/emmet-codemirror-plugin.min.js"></script>
-
-        <!-- CodeMirror - stöd för styleActiveLine -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/selection/active-line.min.js"></script>
+        <!-- <script src="https://unpkg.com/monaco-editor@latest/min/vs/loader.js"></script> -->
+        <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.43.0/min/vs/loader.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/emmet-monaco-es@latest/dist/emmet-monaco.min.js"></script>
 
         <script src="script.js"></script>
     </body>
