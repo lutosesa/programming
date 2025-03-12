@@ -5,12 +5,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Webb Editor</title>
         <link rel="icon" type="image/x-icon" href="img/favicon.ico" />
-        <link rel="stylesheet" href="style.css" />
+        <link rel="stylesheet" href="style.min.css" />
     </head>
     <body>
         <div class="toolbar">
             <div class="container">
-                <img src="img/logo.png" alt="Logo-bild" class="img-logo" data-title="Webb Editor" />
+                <img src="img/logo.png" alt="Logo-bild" class="img-logo" data-title="Webb Editor Santana" />
 
                 <button id="menuButton" class="btn btn-menu" data-title="Skapa, öppna, spara fil">
                     <img src="img/menu.png" alt="meny-bild" />
@@ -24,12 +24,7 @@
             </div>
 
             <div class="container">
-                <button
-                    onclick="switchEditor('html')"
-                    class="btn btn-html active"
-                    data-editor="html"
-                    data-title="Visa HTML-editor"
-                >
+                <button onclick="switchEditor('html')" class="btn btn-html active" data-editor="html" data-title="Visa HTML-editor">
                     <img src="img/tool-html.png" alt="html-bild" />
                 </button>
 
@@ -47,7 +42,7 @@
                     <img src="img/browser.png" alt="kör kod-bild" />
                 </button>
 
-                <button onclick="runCode()" id="run-button" class="btn btn-run" data-title="Kör koden">
+                <button onclick="runCode()" id="run-button" class="btn btn-run" data-title="Kör på förhandvisning">
                     <img src="img/run.png" alt="kör kod-bild" />
                 </button>
             </div>
@@ -57,11 +52,11 @@
                     <img src="img/format.png" alt="format-bild" />
                 </button>
 
-                <button id="increaseFont" class="btn btn-increase" data-title="Öka kod-textstorlek">
+                <button id="increaseFont" class="btn btn-increase" data-title="Öka textstorlek">
                     <img src="img/plus.png" alt="plus-bild" />
                 </button>
 
-                <button id="decreaseFont" class="btn btn-decrease" data-title="Minska kod-textstorlek">
+                <button id="decreaseFont" class="btn btn-decrease" data-title="Minska textstorlek">
                     <img src="img/minus.png" alt="minus-bild" />
                 </button>
 
@@ -151,6 +146,6 @@
         <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.43.0/min/vs/loader.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/emmet-monaco-es@latest/dist/emmet-monaco.min.js"></script>
 
-        <script src="script.js"></script>
+        <script src="script.min.js"></script>
     </body>
 </html>

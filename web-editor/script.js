@@ -1,4 +1,5 @@
 let htmlEditor, cssEditor, jsEditor;
+
 let htmlValue = '<!DOCTYPE html>\n<html>\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1.0">\n<title>Test</title>\n</head>\n<body>\n<div class="content">\n<h1>Välkommen till min webbsida!</h1>\n<p>\nLorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta vel, est eveniet perferendis optio facere ut qui consequuntur nam excepturi provident ad consequatur assumenda commodi dolorum ducimus, ipsam illo corporis adipisci laborum.\n</p>\n</div>\n</body>\n</html>';
 
 let cssValue =
@@ -66,7 +67,6 @@ function runCode() {
     }
     captureConsoleLogs();
 }
-
 function captureConsoleLogs() {
     const outputFrame = document.getElementById('outputFrame');
     if (outputFrame.contentWindow) {
@@ -74,10 +74,22 @@ function captureConsoleLogs() {
     }
 }
 
-// KÖR BROWSER
+// KÖR PÅ BROWSER
+let previewWindow = null; 
 function runBrowser() {
+    if (!previewWindow || previewWindow.closed) {
+         previewWindow = window.open('', '_blank');
+    }
+
+    previewWindow.document.open();
+    previewWindow.document.write(getFullCode());
+    previewWindow.document.close();
+}
+
+// HÄMTAR HTML, CSS OCH JAVASCRIPT FRÅN EDITORERNA
+function getFullCode() {
     const htmlCode = htmlEditor.getValue();
-    const cssCode = `<style>${cssEditor.getValue()}</style>`;
+    const cssCode = `<style>${cssEditor.getValue()}</style>`; 
     const jsCode = `<script>
         try {
             ${jsEditor.getValue()}
@@ -93,40 +105,31 @@ function runBrowser() {
 
     const pageTitle = extractTitleFromHTML(htmlCode);
 
-    const fullPage = `
-        <!DOCTYPE html>
-        <html lang="sv">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>${pageTitle}</title> <!-- Sätt dynamiskt titel här -->
-            ${cssCode}
-            <style>
-                /* Se till att det går att scrolla om innehållet är större än fönstret */
-                body, html {
-                    margin: 0;
-                    padding: 0;
-                    overflow: hidden;
-                }
+    return `
+    <!DOCTYPE html>
+    <html lang="sv">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>${pageTitle}</title>
+      <link rel="icon" type="image/x-icon" href="img/favicon.ico" />
+      ${cssCode}
+    </head>
+    <body>
+      ${htmlCode}
+      ${jsCode}
+    </body>
+    </html>
+  `;
+}
 
-                /* Om du vill ta bort scrollbar på själva webbläsarfönstret */
-                body {
-                    overflow-x: hidden; /* Tar bort horisontell scrollbar */
-                    overflow-y: auto;   /* Aktiverar vertikal scroll om innehållet är större */
-                }
-            </style>
-        </head>
-        <body>
-            ${htmlCode}
-            ${jsCode}
-        </body>
-        </html>
-    `;
-
-    const newWindow = window.open();
-    newWindow.document.open();
-    newWindow.document.write(fullPage);
-    newWindow.document.close();
+// LIVE-UPPDATERING
+function updatePreview() {
+    if (previewWindow && !previewWindow.closed) {
+        previewWindow.document.open();
+        previewWindow.document.write(getFullCode());
+        previewWindow.document.close();
+    }
 }
 
 // RENSA KODEN
@@ -221,7 +224,7 @@ function showAlert(type, title, message) {
 
     closeButton.addEventListener('mouseenter', () => {
         closeButton.style.opacity = '0.8';
-        closeButton.style.transform = 'scale(1.02)';
+        closeButton.style.transform = 'scale(1.01)';
         closeButton.style.boxShadow = '0px 6px 12px rgba(0, 0, 0, 0.7)';
     });
 
@@ -238,12 +241,11 @@ function showAlert(type, title, message) {
 
     alertBox.style.display = 'flex';
 }
-
 function closeAlert() {
     document.getElementById('customAlert').style.display = 'none';
 }
 
-// DEFINIERAR TEMAS
+// DEFINIERAR VS-DARK OCH VS-LIGHT TEMA
 function definesThemes () {
     monaco.editor.defineTheme('vs-light', {
         base: 'vs',
@@ -285,13 +287,14 @@ function definesThemes () {
     });
 }
 
-// INSTÄLLA EDITORER
+// STÄLLER IN TEXTSTORLEKAR FÖR OLIKA ENHETER
 function getResponsiveFontSize() {
     if (window.innerWidth <= 600) return 10;
     if (window.innerWidth <= 1024) return 12;
     return 14;
 }
 
+// KONFIGURERAR EDITORER
 function setupEditors() {
     htmlEditor = monaco.editor.create(document.getElementById('htmlEditor'), {
         value: '',
@@ -347,8 +350,11 @@ function setupEditors() {
     document.getElementById('htmlEditor').style.display = 'block';
 }
 
-
+/***********************
+ * DOMContentLoaded
+ ***********************/
 document.addEventListener('DOMContentLoaded', function () {
+
     require.config({ paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs' } });
 
     require(['vs/editor/editor.main'], function () {
@@ -359,7 +365,6 @@ document.addEventListener('DOMContentLoaded', function () {
         function getQueryParam(param) {
             return new URLSearchParams(window.location.search).get(param);
         }
-
         window.onload = () => {
             const codeId = getQueryParam('id') || sessionStorage.getItem('codeId');
             let exampleCode = sessionStorage.getItem('exampleCode') || '';
@@ -387,7 +392,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         .trim();
                 }
 
-                // Ladda koden i CodeMirror-editorerna
+                // Ladda koden ovan i editorerna
                 htmlEditor.setValue(htmlCode);
                 cssEditor.setValue(cssCode);
                 jsEditor.setValue(jsCode);
@@ -396,17 +401,24 @@ document.addEventListener('DOMContentLoaded', function () {
                 cssEditor.setValue(cssValue);
                 jsEditor.setValue(jsValue);
             }
-            // Uppdatera förhandsvisningen
-            //runCode();
+
+            // Uppdatera förhandsvisningen (iframe)
             formatHtmlEditor();
             formatCssEditor();
             formatJsEditor();
         };
 
+        // LYSSNAR OM TEMA-KNAPPEN KLICKAS
         toggleBtn.addEventListener('click', switchTheme);
 
+        // AKTIVERAR EMMET
         emmetMonaco.emmetHTML(monaco);
         emmetMonaco.emmetCSS(monaco);
+
+        // LYSSNAR PÅ ÄNDRINGAR I ALLA TRE EDITORER OCH UPPDATERAR 'PREVIEW'
+        htmlEditor.onDidChangeModelContent(updatePreview);
+        cssEditor.onDidChangeModelContent(updatePreview);
+        jsEditor.onDidChangeModelContent(updatePreview);
 
         let typingTimer;
         htmlEditor.onDidChangeModelContent(scheduleRunCode);
@@ -417,13 +429,13 @@ document.addEventListener('DOMContentLoaded', function () {
             typingTimer = setTimeout(runCode, 500);
         }
 
+        // LYSSNAR OM FÖNSTRET ÄNDRAR STORLEK
         window.addEventListener('resize', updateEditorSize);
         setTimeout(updateEditorSize, 100);
 
         function getCurrentFontSize() {
             return htmlEditor.getOption(monaco.editor.EditorOption.fontSize);
         }
-
 
         window.addEventListener('resize', () => {
             let responsiveFontSize = getResponsiveFontSize();
@@ -544,6 +556,7 @@ document.addEventListener('DOMContentLoaded', function () {
         function formatCssEditor() {
             cssEditor.getAction('editor.action.formatDocument').run();
         }
+
         function formatJsEditor() {
             jsEditor.getAction('editor.action.formatDocument').run();
         }
@@ -588,7 +601,7 @@ document.addEventListener('DOMContentLoaded', function () {
             openFile();
         });
 
-        // SKAPA PROMPT för att spara och skapa fil
+        // SKAPA PROMPT DYNAMISKT för att spara och skapa fil
         function showFilePrompt(actionType) {
             let overlay = document.createElement('div');
             overlay.style.position = 'fixed';
@@ -610,9 +623,28 @@ document.addEventListener('DOMContentLoaded', function () {
             modalBox.style.textAlign = 'center';
             modalBox.style.animation = 'fadeIn 0.3s ease-in-out';
 
+            let imgElement = document.createElement('img');
+            imgElement.src = actionType === 'create' ? 'img/new.png' : 'img/save.png';
+            imgElement.alt = 'Bildbeskrivning';
+            imgElement.width = 25;
+            imgElement.height = 25;
+
             let title = document.createElement('h2');
             title.innerText = actionType === 'create' ? 'Välj filtyp' : 'Spara fil som';
-            title.style.marginBottom = '15px';
+            title.style.margin = '0';
+
+            let titleContainer = document.createElement('div');
+            titleContainer.style.display = 'flex';
+            titleContainer.style.alignItems = 'center';
+            titleContainer.style.justifyContent = 'center';
+            titleContainer.style.width = '100%';
+            titleContainer.style.gap = '10px';
+            titleContainer.style.borderBottom = '1px solid grey';
+            titleContainer.style.marginBottom = '15px';
+
+            // Lägg till elementen i containern
+            titleContainer.appendChild(imgElement);
+            titleContainer.appendChild(title);
 
             let fileNameInput;
             if (actionType === 'save') {
@@ -629,9 +661,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 fileNameInput.addEventListener('focus', function () {
                     this.placeholder = '';
                 });
-
                 fileNameInput.addEventListener('blur', function () {
                     if (this.value.trim() === '') this.placeholder = 'Ange endast filens namn...';
+                });
+                fileNameInput.addEventListener('mouseenter', () => {
+                    fileNameInput.style.border = '2px solid #000';
+                });
+                fileNameInput.addEventListener('mouseleave', () => {
+                    fileNameInput.style.border = '1px solid #ccc';
                 });
 
                 modalBox.appendChild(fileNameInput);
@@ -670,7 +707,13 @@ document.addEventListener('DOMContentLoaded', function () {
                         createFile(type);
                     } else if (actionType === 'save') {
                         if (!fileNameInput.value.trim()) {
-                            showAlert('warning', 'För att spara', 'ANGE filens namn i textfältet!');
+                            showAlert('info', 'För att spara', 'ANGE filens namn i textfältet!');
+
+                            document.getElementById('closeButton').addEventListener('click', function () {
+                                setTimeout(() => {
+                                    fileNameInput.focus();
+                                }, 0);
+                            });
                             return;
                         }
                         saveFile(type, fileNameInput.value);
@@ -707,7 +750,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             cancelButton.onclick = () => document.body.removeChild(overlay);
 
-            modalBox.appendChild(title);
+            modalBox.appendChild(titleContainer);
             buttons.forEach((btn) => modalBox.appendChild(btn));
             modalBox.appendChild(document.createElement('br'));
             modalBox.appendChild(cancelButton);

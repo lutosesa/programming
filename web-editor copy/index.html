@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="sv">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Webb Editor</title>
+        <link rel="icon" type="image/x-icon" href="img/favicon.ico" />
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div class="toolbar">
+            <div class="container">
+                <img src="img/logo.png" alt="Logo-bild" class="img-logo" data-title="Webb Editor" />
+
+                <button id="menuButton" class="btn btn-menu" data-title="Skapa, öppna, spara fil">
+                    <img src="img/menu.png" alt="meny-bild" />
+                </button>
+                <div id="popupMenu" class="popup-menu">
+                    <button id="newFile" class="btn-file"><img src="img/new.png" alt="" />&nbsp; Ny fil</button>
+                    <button id="openFile" class="btn-file"><img src="img/open.png" alt="" />&nbsp; Öppna fil</button>
+                    <button id="saveFile" class="btn-file"><img src="img/save.png" alt="" />&nbsp; Spara fil</button>
+                    <button id="closeMenu" class="btn-file"><img src="img/close.png" alt="" />&nbsp; Stäng</button>
+                </div>
+            </div>
+
+            <div class="container">
+                <button onclick="switchEditor('html')" class="btn btn-html active" data-editor="html" data-title="Visa HTML-editor">
+                    <img src="img/tool-html.png" alt="html-bild" />
+                </button>
+
+                <button onclick="switchEditor('css')" class="btn btn-css" data-editor="css" data-title="Visa CSS-editor">
+                    <img src="img/tool-css.png" alt="css-bild" />
+                </button>
+
+                <button onclick="switchEditor('js')" class="btn btn-js" data-editor="js" data-title="Visa JS-editor">
+                    <img src="img/tool-js.png" alt="javascript-bild" />
+                </button>
+            </div>
+
+            <div class="container">
+                <button onclick="runBrowser()" id="run-button" class="btn btn-run" data-title="Kör på webbläsaren">
+                    <img src="img/browser.png" alt="kör kod-bild" />
+                </button>
+
+                <button onclick="runCode()" id="run-button" class="btn btn-run" data-title="Kör koden">
+                    <img src="img/run.png" alt="kör kod-bild" />
+                </button>
+            </div>
+
+            <div class="container">
+                <button id="format-button" class="btn btn-format" data-title="Formattera koden">
+                    <img src="img/format.png" alt="format-bild" />
+                </button>
+
+                <button id="increaseFont" class="btn btn-increase" data-title="Öka kod-textstorlek">
+                    <img src="img/plus.png" alt="plus-bild" />
+                </button>
+
+                <button id="decreaseFont" class="btn btn-decrease" data-title="Minska kod-textstorlek">
+                    <img src="img/minus.png" alt="minus-bild" />
+                </button>
+
+                <button onclick="clearCode('onAlert')" id="clear-button" class="btn btn-clear" data-title="Rensa koden">
+                    <img src="img/clear.png" alt="clear-bild" />
+                </button>
+            </div>
+
+            <div class="container">
+                <button id="buttonInfo" class="btn btn-info" data-title="Info om Webb Editor">
+                    <img src="img/info.png" alt="info-bild" />
+                </button>
+                <div id="popupInfo" class="popup-info">
+                    <div class="popup-content">
+                        <h3>Information om Webb Editor</h3>
+                        <p
+                            >Detta är en kraftfull webb-editor som låter dig skapa och redigera webbsidor direkt i din
+                            webbläsare. Du kan använda den för att skriva HTML, CSS och JavaScript utan att behöva
+                            installera någon programvara.</p
+                        >
+                        <h4>Funktioner inkluderar:</h4>
+                        <dl>
+                            <dd>- Live-preview (förhandvisning)</dd>
+                            <dd>- Att köra koden på webbläsaren</dd>
+                            <dd>- Syntax highlighting</dd>
+                            <dd>- IntelliSense (kodförslag)</dd>
+                            <dd>- Kod-formattering</dd>
+                            <dd>- Möjlighet att fälla ihop kodblock för bättre överblick</dd>
+                            <dd>- Mörk och ljus tema</dd>
+                            <dd>- Öka och minska kod-textstorlek</dd>
+                            <dd>- Stänger automatiskt HTML-taggar</dd>
+                            <dd>- Stänger automatiskt parenteser och citattecken</dd>
+                            <dd>- Markera matchande parenteser</dd>
+                            <dd
+                                >- Kommentera med <b><i>ctrl + '</i></b></dd
+                            >
+                            <dd>- Sök- och ersättningsfunktion</dd>
+                            <dd>- Felsökning och varningar för syntaxfel</dd>
+                            <dt><b>Emmet-monaco</b></dt>
+                            <dd>- Snabbskrivning av HTML och CSS genom korta uttryck</dd>
+                            <dd
+                                >- Skriv <b>!</b> och tryck <b><i>Tab</i></b
+                                >, så får du en komplett HTML5-struktur</dd
+                            >
+                        </dl>
+                        <button id="buttonClose" class="btn-close">Stäng</button>
+                        <div class="popup-footer"> © 2025 Skapad av Tomas Serrano Santana </div>
+                    </div>
+                </div>
+
+                <button id="toggleTheme" class="btn btn-toggle" data-title="Byt tema">
+                    <span class="btn-toggle-sun active">
+                        <img src="img/sol.png" alt="sol-bild" class="icon-sun" />
+                    </span>
+                    <span class="btn-toggle-moon inactive">
+                        <img src="img/moon.png" alt="moon-bild" class="icon-moon" />
+                    </span>
+                </button>
+            </div>
+        </div>
+
+        <div id="editor-container" class="editor-container">
+            <div id="editors" class="editors">
+                <div id="htmlEditor" class="editor"></div>
+                <div id="cssEditor" class="editor hidden"></div>
+                <div id="jsEditor" class="editor hidden"></div>
+            </div>
+
+            <div id="resizer"></div>
+
+            <iframe id="outputFrame" class="outputFrame" scrolling="auto"></iframe>
+        </div>
+
+        <!-- Anpassad Alert Modal -->
+        <div id="customAlert" class="alert-modal" style="display: none">
+            <div class="alert-content">
+                <div class="alert-header">
+                    <img id="alertIcon" src="" alt="Alert Icon" />
+                    <h2 id="alertTitle"></h2>
+                </div>
+                <p id="alertMessage"></p>
+                <button id="closeButton" onclick="closeAlert()">OK</button>
+            </div>
+        </div>
+
+        <!-- <script src="https://unpkg.com/monaco-editor@latest/min/vs/loader.js"></script> -->
+        <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.43.0/min/vs/loader.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/emmet-monaco-es@latest/dist/emmet-monaco.min.js"></script>
+
+        <script src="script.js"></script>
+    </body>
+</html>
