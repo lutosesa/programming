@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Webb Editor</title>
         <link rel="icon" type="image/x-icon" href="img/favicon.ico" />
-        <link rel="stylesheet" href="style.min.css" />
+        <link rel="stylesheet" href="style.css" />
     </head>
     <body>
         <div class="toolbar">
@@ -24,11 +24,21 @@
             </div>
 
             <div class="container">
-                <button onclick="switchEditor('html')" class="btn btn-html active" data-editor="html" data-title="Visa HTML-editor">
+                <button
+                    onclick="switchEditor('html')"
+                    class="btn btn-html active"
+                    data-editor="html"
+                    data-title="Visa HTML-editor"
+                >
                     <img src="img/tool-html.png" alt="html-bild" />
                 </button>
 
-                <button onclick="switchEditor('css')" class="btn btn-css" data-editor="css" data-title="Visa CSS-editor">
+                <button
+                    onclick="switchEditor('css')"
+                    class="btn btn-css"
+                    data-editor="css"
+                    data-title="Visa CSS-editor"
+                >
                     <img src="img/tool-css.png" alt="css-bild" />
                 </button>
 
@@ -127,7 +137,7 @@
 
             <div id="resizer"></div>
 
-            <iframe id="outputFrame" class="outputFrame" scrolling="auto"></iframe>
+            <iframe id="outputFrame" class="output-iframe" scrolling="auto"></iframe>
         </div>
 
         <!-- Anpassad Alert Modal -->
@@ -146,6 +156,6 @@
         <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.43.0/min/vs/loader.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/emmet-monaco-es@latest/dist/emmet-monaco.min.js"></script>
 
-        <script src="script.min.js"></script>
+        <script src="script.js"></script>
     </body>
 </html>

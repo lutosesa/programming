@@ -485,12 +485,16 @@ document.addEventListener('DOMContentLoaded', function () {
             isDragging = true;
             document.body.style.cursor = 'col-resize';
 
+            // Gör så att iframe inte stör under dragningen
+            outputFrame.style.pointerEvents = 'none';
+
             document.addEventListener('mousemove', onMouseMove);
             document.addEventListener('mouseup', stopDragging);
         });
 
         function onMouseMove(event) {
             if (!isDragging) return;
+            event.preventDefault(); // Förhindra oönskade markeringar
 
             let containerRect = container.getBoundingClientRect();
             let newWidth = event.clientX - containerRect.left;
@@ -504,6 +508,10 @@ document.addEventListener('DOMContentLoaded', function () {
         function stopDragging() {
             isDragging = false;
             document.body.style.cursor = 'default';
+
+            // Återställ pointer-events på iframe
+            outputFrame.style.pointerEvents = 'auto';
+            
             document.removeEventListener('mousemove', onMouseMove);
             document.removeEventListener('mouseup', stopDragging);
         }
@@ -872,4 +880,3 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
-
